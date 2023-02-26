@@ -8,14 +8,16 @@ const {
     feedback,
     forgotPass,
     verifyOtp,
-    newPass
-}=require('../controllers/user');
-const { Router } = require("express");
+    newPass,
+    getAuth
+}=require('../controllers/userController');
 
-router.post('/newUser',newUser)
-router.post('/loginUser',loginUser)
-router.get('/logout',logout)
+
+router.get("/getAuth",authenticate,getAuth)
+router.get('/logout',authenticate,logout)
 router.post('/feedback',authenticate,feedback)
+router.post('/loginUser',loginUser)
+router.post('/newUser',newUser)
 router.post('/forgotPass',forgotPass)
 router.post('/verifyOtp',verifyOtp)
 router.post('/newPass',newPass)

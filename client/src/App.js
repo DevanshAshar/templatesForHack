@@ -13,7 +13,7 @@ import Home from './Pages/Home';
 import LoginPage from './Pages/LoginPage';
 import ErrorPage from './Pages/ErrorPage';
 import SplitLoginPage from './Pages/SplitLoginPage';
-import SignIn from './Pages/SignIn';
+import SignUp from './Pages/SignUp';
 import ForgotPassword from './Pages/ForgotPassword';
 
 
@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       <Route path="login" element={< LoginPage />} />
       <Route path="about" element={<AboutUs />} />
       <Route path="contact" element={<ContactUs />} />
-      <Route path="signup" element={<SignIn />} />
+      <Route path="signup" element={<SignUp />} />
       <Route path="abc" element={<SplitLoginPage />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
       <Route path="*" element={<ErrorPage />}></Route>

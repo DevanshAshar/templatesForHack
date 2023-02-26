@@ -24,17 +24,17 @@ import { validateData } from '../Utils/validateData';
 
 const contactOptions = [
   {
-    label: 'Address',
+    label: 'BASE ADDRESS',
     value: 'Mumbai, India',
     icon: GoLocation
   },
   {
-    label: 'PHONE NUMBER',
+    label: 'CONTACT NUMBER',
     value: '+91 981-928-1311',
     icon: BsPhone
   },
   {
-    label: 'EMAIL',
+    label: 'EMAIL ADDRESS',
     value: 'info@example.com',
     icon: HiOutlineMail
   }
@@ -42,17 +42,18 @@ const contactOptions = [
 
 export default function ContactUs() {
   const [data, setData] = useState({ name: "", email: "", subject: "", message: "" })
-  const [errors, setErrors] = useState({ email: "", subject: "" })
+  const [errors, setErrors] = useState(data)
+
+
 
   const dealingWithFormSubmission = async (e) => {
     e.preventDefault()
-    setErrors({})
-    const responseFromValidation = validateData(data)
-    if (responseFromValidation.noErrors == false) {
-      console.log(responseFromValidation)
-      setErrors(responseFromValidation)
-      console.log(errors);
-    } else {
+    var err =  validateData(data)
+    setErrors(err)
+    
+    if (err.noErrors == true) {
+      console.log('yooo');
+      
       // const resp= await fetch("/contactData",{
       //   method:"POST",
       //   headers:{
@@ -68,6 +69,8 @@ export default function ContactUs() {
       // }
     }
   }
+
+
 
 
 
@@ -135,7 +138,7 @@ export default function ContactUs() {
                 <FormLabel>Email</FormLabel>
                 <Input type="email" placeholder="try.user99@gmail.com
 " rounded="md" onChange={setFormData} />
-                {errors.email == "" ? (
+                {errors.email == ""?(
                   <FormHelperText>
                     We promise to not spam your inbox!
                   </FormHelperText>
@@ -147,11 +150,8 @@ export default function ContactUs() {
 
             <FormControl className='parent' isInvalid={errors.subject} id="subject" isRequired>
               <FormLabel>Subject</FormLabel>
-              <Input type="text"  onChange={setFormData} placeholder="Are you available for freelance work?" rounded="md" />
-              {errors.subject == "" ? (
-                <FormHelperText>
-                </FormHelperText>
-              ) : (
+              <Input type="text" onChange={setFormData} placeholder="Are you available for freelance work?" rounded="md" />
+              {errors.subject == "" && (
                 <FormErrorMessage>{errors.subject}</FormErrorMessage>
               )}
 
@@ -169,7 +169,7 @@ export default function ContactUs() {
             <Button
               bg="#318e5d"
               color="white"
-              
+
               _hover={{
                 bg: 'green.700'
               }}

@@ -1,32 +1,33 @@
 const jwt = require("jsonwebtoken");
-const User=require('../models/user')
+const User=require('../models/userSchema')
+
 const authenticate = async (req, res, next) => {
-    try {
+    try {        
         const token=req.cookies.jsonwebtoken;
-        //const token=req.header('AuthenticateUser')
+
         if (!token) {
+            console.log('no cookie')
             res.status(400).json({message:'Login First'})
         }
-        
+
         const decryptedPayload = jwt.verify(
             token,
             process.env.SECRET_KEY
-        );
-        
+        )
+        console.log(decryptedPayload)
+
         const userData = await User.findOne({
             username: decryptedPayload.username,
         });
-        if (!userData) {
-            res.status(400).json({message:'User Not Found'})
-        }
         
+        if (!userData) {
+            throw new Error("user not found")
+        }
+    
         req.user = userData;
         next();
     } catch (err) {
-        res.status(400).json({
-            error: "Authorization not given",
-            message: err.message,
-        });
+        console.log(err)
     }
 };
 

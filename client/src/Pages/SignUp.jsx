@@ -1,4 +1,4 @@
-import React, {useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Progress,
     Box,
@@ -12,24 +12,59 @@ import Form3 from "../Components/SigninFormSteps/Form3"
 import Form1 from "../Components/SigninFormSteps/Form1"
 import Form2 from "../Components/SigninFormSteps/Form2"
 import { Country } from 'country-state-city';
-
+import { useNavigate } from 'react-router-dom';
+import { validateData } from '../Utils/validateData';
 
 export default function SignIn() {
     const countries = useMemo(() => {
         return Country.getAllCountries()
     }, [])
-
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username:"", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "+91 " })
+    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "+91 ",profilePic:"" })
+    const [errors,setErrors] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "",profilePic:"" })
+    
 
-    const dealingWithSignInFormSubmission = (e) => {
+    const nextButtonLogic = () =>{
+        if(step==1){
+            var err= validateData({phoneNumber:data.phoneNumber,email:data.email})
+            console.log(err);
+            setErrors(err)    
+        }else{
+            var err= validateData({username:data.username,password:data.password,})
+            console.log(err);
+            setErrors(err)
+        }
+        if(err.noErrors == true){
+            setStep(step+1)
+            setProgress(progress + 33.33)
+        }
+    }
+
+    const dealingWithSignInFormSubmission = async (e) => {
         e.preventDefault()
+        const resp = await fetch("http://localhost:5000/user/newUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        const responseInJSON = await resp.json()
+        if(resp.status==200){
+            navigate("/abc")
+        }else{
+            if(responseInJSON.message="Username is not unique"){
+
+            }else if(responseInJSON.message="Email is not unique"){
+
+            }
+        }
     }
 
     const setFormData = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
-        console.log(data);
     }
 
     return (
@@ -60,7 +95,7 @@ export default function SignIn() {
                     isAnimated>
                 </Progress>
 
-                {step === 1 ? <Form1 setFormData={setFormData} countries={countries} setData={setData} data={data} /> : step === 2 ? <Form2 setFormData={setFormData} data={data} /> : <Form3 setFormData={setFormData} data={data} />}
+                {step === 1 ? <Form1 errors={errors} setFormData={setFormData} countries={countries} setData={setData} data={data} /> : step === 2 ? <Form2 setFormData={setFormData} errors={setErrors} data={data} /> : <Form3 setFormData={setFormData} errors={setErrors} data={data} />}
 
                 <Flex w="100%" mt={'20px'}>
 
@@ -85,14 +120,7 @@ export default function SignIn() {
                     <Button
                         w="7rem"
                         hidden={step === 3}
-                        onClick={() => {
-                            setStep(step + 1);
-                            if (step === 3) {
-                                setProgress(100);
-                            } else {
-                                setProgress(progress + 33.33);
-                            }
-                        }}
+                        onClick={nextButtonLogic}
                         colorScheme="teal"
                         variant="outline">
                         Next

@@ -57,15 +57,12 @@ export default function Form3(props) {
                     </InputGroup>
                 </FormControl>
 
-                <Container className='container' b>
+                <Container className='container' w={'100'} textAlign='center' border={'dashed 2px'}>
                     <div {...getRootProps({ className: 'dropzone' })}>
                         <input {...getInputProps()} />
                         <Text>Drag 'n' drop image</Text>
                     </div>
-                    <aside>
-                        <h4>Files</h4>
-                        <ul>{files}</ul>
-                    </aside>
+                    <Text>Images selected: {files}</Text>
 
                 </Container>
 

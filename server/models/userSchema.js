@@ -8,25 +8,24 @@ const userSchema=new mongoose.Schema(
     {
         username:{
             type:String,
-            unique:[true,'username already exists']
             },
         password: {
             type: String,
-            minlength: [8, "Password must contain minimum 8 characters"],
         },
-        image:[{
+        profilePic:{
             type:String
-        }],
+        },
         email:{
             type:String,
-            required:true,
-            unique:[true,'email-id exists'],
-            lowercase:true,
-            validate(value){
-                if(!validator.isEmail(value)){
-                    throw new Error('Invalid Email-Id')
-                }
-            }
+        },
+        country:{
+            type:String
+        },
+        name:{
+            type:String
+        },
+        phoneNumber:{
+            type:String
         },
         otp:{type:Number},
         otpExpire:{type:Number}
@@ -35,9 +34,10 @@ const userSchema=new mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
         if (this.isModified("password")) {
-            this.password = await bcrypt.hash(this.password, process.env.SALT);
+            this.password = bcrypt.hash(this.password,Number(process.env.SALT));
         }
         next()
     })
+    
 const User=mongoose.model('User',userSchema)
 module.exports=User

@@ -30,6 +30,31 @@ export default function SplitLoginPage() {
         console.log(data);
     }
 
+    const dealingWithLoginPageSubmission = async (e) => {
+        e.preventDefault();
+        if (true) {
+            const response = await fetch("http://localhost:5000/user/loginUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(data)
+            })
+            const responseInJSON = await response.json()
+            if (response.status == 200) {
+                navigate("/")
+                //if there is role then use responseInJSON.role
+            } else {
+                
+                //show that wrong credentials
+            }
+
+        } else {
+            //error
+        }
+    }
+
     return (
         <Stack minH="92vh" direction={{ base: 'column', md: 'row' }} paddingBottom="20px"
         >
@@ -56,6 +81,7 @@ export default function SplitLoginPage() {
                         h="max-content !important"
                         bg={useColorModeValue('white', 'gray.700')}
                         rounded="lg"
+                        onSubmit={dealingWithLoginPageSubmission}
                         boxShadow="2xl"
                         p={{ base: 5, sm: 10 }}
                     >
@@ -94,7 +120,7 @@ export default function SplitLoginPage() {
                                 <Checkbox colorScheme="green" size="md">
                                     Remember me
                                 </Checkbox>
-                                <Link as={NavLink} to='/forgotpassword' state={{ email: data.email,from:1 }} fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>
+                                <Link as={NavLink} to='/forgotpassword' state={{ email: data.email, from: 1 }} fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>
                             </Stack>
                             <Button
                                 bg="green.400"
@@ -104,6 +130,7 @@ export default function SplitLoginPage() {
                                 }}
                                 rounded="md"
                                 w="100%"
+                                type='submit'
                             >
                                 Sign in
                             </Button>

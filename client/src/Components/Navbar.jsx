@@ -45,9 +45,10 @@ const Nav = ({ children }) => (
   </Link>
 );
 
-export default function Navbar() {
+export default function Navbar(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  console.log(props)
 
   return (
     <>

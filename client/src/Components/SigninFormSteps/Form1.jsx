@@ -8,24 +8,25 @@ import {
     HStack,
     Select,
     InputLeftAddon,
+    FormErrorMessage,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 
 export default function Form1(props) {
-
     const countries = props.countries
-    
+
     useEffect(() => {
-        console.log('tp');
         setPhoneNumberPrefix(countries.find((country) => country.name == props.data.country).phonecode.charAt(0) == '+' ? countries.find((country) => country.name == props.data.country).phonecode : '+' + countries.find((country) => country.name == props.data.country).phonecode)
     }, [props.data.country])
+
+
 
     const [phoneNumberPrefix, setPhoneNumberPrefix] = useState(props.data.phoneNumber.split(" ")[0])
 
     const dealingWithPhoneNumberPrefix = (e) => {
-        props.setFormData(e)
         props.data.phoneNumber = phoneNumberPrefix + " " + props.data.phoneNumber.split(" ")[1]
+        props.setFormData(e)
     }
 
     return (
@@ -56,12 +57,18 @@ export default function Form1(props) {
 
 
             <div className="parent">
-                <FormControl mt="3%" isRequired>
+                <FormControl mt="3%" isRequired isInvalid={props.errors.email}>
                     <FormLabel htmlFor="email" >
                         Email address
                     </FormLabel>
                     <Input id="email" type="email" value={props.data.email} onChange={props.setFormData} />
-                    <FormHelperText>We'll never share your email.</FormHelperText>
+                    {props.errors.email == "" ? (
+                        <FormHelperText>
+                            We'll never share your email
+                        </FormHelperText>
+                    ) : (
+                        <FormErrorMessage>{props.errors.email}</FormErrorMessage>
+                    )}
                 </FormControl>
             </div>
 
@@ -101,14 +108,12 @@ export default function Form1(props) {
             </div>
 
             <div className="parent">
-                <FormControl mt="5%" isRequired>
+                <FormControl mt="5%" isRequired isInvalid={props.errors.phoneNumber}>
                     <FormLabel
                         htmlFor="country"
                         fontSize="sm"
                         fontWeight="md"
                         color="gray.700"
-                        value={phoneNumberPrefix + " " + props.data.phoneNumber}
-                        onChange={props.setFormData}
                         _dark={{
                             color: 'gray.50',
                         }}>
@@ -116,8 +121,15 @@ export default function Form1(props) {
                     </FormLabel>
                     <InputGroup>
                         <InputLeftAddon children={phoneNumberPrefix} />
-                        <Input type='number' value={props.data.phoneNumber} onChange={props.setFormData} />
+                        <Input type='number' id='phoneNumber' value={props.data.phoneNumber} onChange={props.setFormData} />
                     </InputGroup>
+                    {props.errors.phoneNumber == "" ? (
+                        <FormHelperText>
+                            Your phone number wont be spammed
+                        </FormHelperText>
+                    ) : (
+                        <FormErrorMessage>{props.errors.phoneNumber}</FormErrorMessage>
+                    )}
                 </FormControl>
             </div>
 
