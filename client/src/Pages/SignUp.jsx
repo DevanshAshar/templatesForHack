@@ -22,24 +22,26 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "+91 ",profilePic:"" })
-    const [errors,setErrors] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "",profilePic:"" })
-    
+    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "" })
+    const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "" })
+    const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("")
 
-    const nextButtonLogic = () =>{
-        if(step==1){
-            var err= validateData({phoneNumber:data.phoneNumber,email:data.email})
-            console.log(err);
-            setErrors(err)    
-        }else{
-            var err= validateData({username:data.username,password:data.password,})
-            console.log(err);
+    const nextButtonLogic = () => {
+        if (step == 1) {
+            var err = validateData({ phoneNumber: data.phoneNumber, email: data.email, phoneNumberPrefix: phoneNumberPrefix })
             setErrors(err)
+        } else if (step == 2) {
+            var err = validateData({ username: data.username, password: data.password, })
+            setErrors(err)
+        } else {
+
         }
-        if(err.noErrors == true){
-            setStep(step+1)
+
+        if (err.noErrors == true && data.password == data.confirmPassword) {
+            setStep(step + 1)
             setProgress(progress + 33.33)
         }
+
     }
 
     const dealingWithSignInFormSubmission = async (e) => {
@@ -49,16 +51,18 @@ export default function SignIn() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({ ...data, phoneNumberPrefix })
         })
         const responseInJSON = await resp.json()
-        if(resp.status==200){
+        if (resp.status == 200) {
             navigate("/abc")
-        }else{
-            if(responseInJSON.message="Username is not unique"){
-
-            }else if(responseInJSON.message="Email is not unique"){
-
+        } else {
+            if (responseInJSON.message == "Username is not unique") {
+                setErrors({ ...errors, username: "This username is taken"})
+                setStep(2)
+            } else if (responseInJSON.message == "Email is not unique") {
+                setErrors({ ...errors, email: "An account already exists for this email" })
+                setStep(1)
             }
         }
     }
@@ -95,7 +99,9 @@ export default function SignIn() {
                     isAnimated>
                 </Progress>
 
-                {step === 1 ? <Form1 errors={errors} setFormData={setFormData} countries={countries} setData={setData} data={data} /> : step === 2 ? <Form2 setFormData={setFormData} errors={setErrors} data={data} /> : <Form3 setFormData={setFormData} errors={setErrors} data={data} />}
+                {step === 1 ? <Form1 errors={errors} phoneNumberPrefix={phoneNumberPrefix} setPhoneNumberPrefix={setPhoneNumberPrefix} setFormData={setFormData} countries={countries} data={data} />
+                    : step === 2 ? <Form2 setFormData={setFormData} errors={errors} setErrors={setErrors} data={data} />
+                        : <Form3 setFormData={setFormData} errors={setErrors} data={data} />}
 
                 <Flex w="100%" mt={'20px'}>
 
@@ -109,7 +115,6 @@ export default function SignIn() {
                             colorScheme="teal"
                             variant="outline"
                             w="7rem"
-
                             mr="5%">
                             Back
                         </Button>

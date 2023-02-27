@@ -18,8 +18,9 @@ const getAuth = async (req, res) => {
 const newUser = async (req, res) => {
     try {
         console.log(req.body)
-        const { username, password, email, country, phoneNumber, firstName, lastName } = req.body
+        const { username, password, email, country, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
         var name = firstName+" "+lastName
+        var phone = phoneNumberPrefix + " " + phoneNumber
 
         const userExist = await User.findOne({ username: username })
         const emailExist = await User.findOne({ email: email })
@@ -30,17 +31,8 @@ const newUser = async (req, res) => {
             return res.status(400).json({message:"Email is not unique"})
         }
 
-        const user = new User({username, password, email, country, phoneNumber,name});
+        const user = new User({username, password, email, country, phoneNumber:phone,name});
         await user.save();
-
-        // const token = jwt.sign({ username: req.body.username }, process.env.SECRET_KEY);
-
-        // res.cookie("jsonwebtoken", token, {
-        //     maxAge: 604800000,
-        //     httpOnly: true,
-        //     sameSite: "none",
-        //     secure: true,
-        // });
 
         res.status(200).json({ message: "Successfully Registered" });
 

@@ -17,15 +17,10 @@ export default function Form1(props) {
     const countries = props.countries
 
     useEffect(() => {
-        setPhoneNumberPrefix(countries.find((country) => country.name == props.data.country).phonecode.charAt(0) == '+' ? countries.find((country) => country.name == props.data.country).phonecode : '+' + countries.find((country) => country.name == props.data.country).phonecode)
+        props.setPhoneNumberPrefix(countries.find((country) => country.name == props.data.country).phonecode.charAt(0) == '+' ? countries.find((country) => country.name == props.data.country).phonecode : '+' + countries.find((country) => country.name == props.data.country).phonecode)
     }, [props.data.country])
 
-
-
-    const [phoneNumberPrefix, setPhoneNumberPrefix] = useState(props.data.phoneNumber.split(" ")[0])
-
-    const dealingWithPhoneNumberPrefix = (e) => {
-        props.data.phoneNumber = phoneNumberPrefix + " " + props.data.phoneNumber.split(" ")[1]
+    const dealingWithPhoneNumberPrefixOnCountryChange = (e) => {
         props.setFormData(e)
     }
 
@@ -93,7 +88,7 @@ export default function Form1(props) {
                         shadow="sm"
                         size="md"
                         w="full"
-                        onChange={dealingWithPhoneNumberPrefix}
+                        onChange={dealingWithPhoneNumberPrefixOnCountryChange}
                         value={props.data.country}
                         rounded="md">
                         <option key={-1} value="" disabled style={{ fontWeight: "bold.600" }}>Select your option</option>
@@ -120,12 +115,12 @@ export default function Form1(props) {
                         Phone Number
                     </FormLabel>
                     <InputGroup>
-                        <InputLeftAddon children={phoneNumberPrefix} />
+                        <InputLeftAddon children={props.phoneNumberPrefix} />
                         <Input type='number' id='phoneNumber' value={props.data.phoneNumber} onChange={props.setFormData} />
                     </InputGroup>
                     {props.errors.phoneNumber == "" ? (
                         <FormHelperText>
-                            Your phone number wont be spammed
+                            We wont spam your phone number
                         </FormHelperText>
                     ) : (
                         <FormErrorMessage>{props.errors.phoneNumber}</FormErrorMessage>
