@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken");
-const User=require('../models/userSchema')
+const User = require('../models/userSchema')
 
 const authenticate = async (req, res, next) => {
-    try {        
-        const token=req.cookies.jsonwebtoken;
+    try {
+        const token = req.cookies.jsonwebtoken;
 
         if (!token) {
-            console.log('no cookie')
-            res.status(400).json({message:'Login First'})
+            res.status(400).json({ message: 'Login First' })
         }
 
         const decryptedPayload = jwt.verify(
@@ -17,13 +16,13 @@ const authenticate = async (req, res, next) => {
         console.log(decryptedPayload)
 
         const userData = await User.findOne({
-            username: decryptedPayload.username,
+            _id: decryptedPayload._id,
         });
-        
+
         if (!userData) {
             throw new Error("user not found")
         }
-    
+
         req.user = userData;
         next();
     } catch (err) {
@@ -32,3 +31,5 @@ const authenticate = async (req, res, next) => {
 };
 
 module.exports = authenticate;
+
+

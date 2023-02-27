@@ -5,6 +5,7 @@ import Navbar from "../Components/Navbar"
 
 export default function RootLayout() {
     const [auth, setAuth] = useState()
+
     const getAuth = async () => {
         const resp = await fetch("http://localhost:5000/user/getAuth", {
             method: "GET",
@@ -17,6 +18,7 @@ export default function RootLayout() {
         const respInJSON = await resp.json()
         if(resp.status==200){
             setAuth(respInJSON)
+            console.log('5050505')
         }else{
             setAuth(null)
         }
@@ -26,7 +28,6 @@ export default function RootLayout() {
     useEffect(() => {
         getAuth()
         console.log(auth)
-        console.log('AUTH WAS CHECKED`')
     }, [])
 
 

@@ -17,7 +17,6 @@ const getAuth = async (req, res) => {
 
 const newUser = async (req, res) => {
     try {
-        console.log(req.body)
         const { username, password, email, country, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
         var name = firstName+" "+lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
@@ -44,13 +43,13 @@ const newUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        console.log(req.body)
         const { email, password } = req.body;
+
         const userToBeChecked = await User.findOne({ email: email })
         if (userToBeChecked) {
             const passwordMatchOrNot = await bcrypt.compare(password, userToBeChecked.password)
             if (passwordMatchOrNot) {
-                const token = jwt.sign({ username: req.body.username }, process.env.SECRET_KEY);
+                const token = await userToBeChecked.generateAuthToken();
                 res.cookie("jsonwebtoken", token, {
                     maxAge: 86400000,
                     httpOnly: true,
@@ -66,7 +65,7 @@ const loginUser = async (req, res) => {
             if (emailToBeChecked) {
                 const passwordMatchOrNot = await bcrypt.compare(password, emailToBeChecked.password)
                 if (passwordMatchOrNot) {
-                    const token = jwt.sign({ username: req.body.username }, process.env.SECRET_KEY);
+                    const token = await emailToBeChecked.generateAuthToken();
                     res.cookie("jsonwebtoken", token, {
                         maxAge: 86400000,
                         httpOnly: true,
@@ -84,6 +83,7 @@ const loginUser = async (req, res) => {
 
     } catch (error) {
         console.log(error)
+        return res.status(234).json({message:"f"})
     }
 };
 
