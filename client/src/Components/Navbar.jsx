@@ -27,11 +27,11 @@ const Nav = ({ children }) => (
   <Link
     px={2}
     py={1}
-    fontSize={{md:'md',lg:"lg",xl:'2xl'}}
+    fontSize={{ md: 'md', lg: "lg", xl: '2xl' }}
     rounded={'md'}
     _hover={{
       textDecoration: 'none',
-      fontWeight:'bold',
+      fontWeight: 'bold',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
     as={NavLink}
@@ -48,15 +48,16 @@ const Nav = ({ children }) => (
 export default function Navbar(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  console.log(props)
+  console.log(props.Auth)
+
 
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 
-          <Box mr="30px" fontSize={{sm:'xl',md:'3xl',lg:"4xl",xl:'5xl'}}
-            as={Link} _hover={{textDecoration:"none"}} href="/" fontFamily={'Montserrat'}
+          <Box mr="30px" fontSize={{ sm: 'xl', md: '3xl', lg: "4xl", xl: '5xl' }}
+            as={NavLink} _hover={{ textDecoration: "none" }} to="/" fontFamily={'Montserrat'}
           >Logo</Box>
           <Spacer></Spacer>
 
@@ -82,10 +83,11 @@ export default function Navbar(props) {
             </Button>
           </HStack>
 
-          <Flex alignItems={'center'}>
+          {props?.Auth && <Flex alignItems={'center'}>
             <Menu>
               <MenuButton
-                outlineColor={useColorModeValue("gray.700", "gray.300")}
+                outlineColor="gray.700"
+                _dark={{ outlineColor: "gray.300" }}
                 marginLeft="40px"
                 as={Button}
                 rounded={'full'}
@@ -99,18 +101,19 @@ export default function Navbar(props) {
               </MenuButton>
               <MenuList
                 border={'none'}
-                alignItems={'center'} outlineColor={useColorModeValue("gray.600", "gray.300")}
+                alignItems={'center'}
+                outlineColor="gray.600"
               >
                 <br />
                 <Center >
                   <Avatar
                     size={'2xl'}
-                    src={'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
+                    src={props?.Auth?.profilePic || 'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
                   />
                 </Center>
                 <br />
                 <Center>
-                  <p>Username</p>
+                  <p>{props?.Auth?.username}</p>
                 </Center>
                 <br />
                 <MenuDivider />
@@ -119,6 +122,8 @@ export default function Navbar(props) {
               </MenuList>
             </Menu>
           </Flex>
+          }
+
         </Flex>
 
         {isOpen ? (

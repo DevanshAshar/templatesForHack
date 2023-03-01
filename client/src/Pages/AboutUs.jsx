@@ -28,9 +28,9 @@ export default function AboutUs() {
           Testimonials
         </chakra.h3>
       </Flex>
-      
+
       <SimpleGrid columns={2} minChildWidth="465px">
-        {testimonials.map((testimonial) => {
+        {testimonials.map((testimonial, index) => {
           return (
             <Container maxW="5xl" p={{ base: 5, md: 10 }}>
               <VStack
@@ -45,6 +45,7 @@ export default function AboutUs() {
                 maxW="25rem"
                 margin="0 auto"
                 boxShadow="lg"
+                key={index}
               >
                 <Icon as={FaQuoteRight} w={8} h={8} color="green.400" />
                 <Text p={5} color="gray.500">
