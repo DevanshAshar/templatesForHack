@@ -106,7 +106,7 @@ const feedback = async (req, res) => {
         }
         var feedbk = await Feedback.create(fdbk)
         feedbk = await feedbk.populate("user", "-password")
-        hogres.status(200).json({ message: feedbk })
+        res.status(200).json({ message: feedbk })
     } catch (error) {
         console.log(error)
     }
@@ -182,6 +182,35 @@ const newPass = async (req, res) => {
     }
 };
 
+const newProfilePic=async(req,res)=>{
+    try {
+       const {newPfp}=req.body
+       if(!newPfp)
+       return res.status(400).json({message:'Enter a profile pic'})
+       await User.findByIdAndUpdate(req.user._id,{profilePic:newPfp})
+       res.status(200).json({message:'Profile pic updated'})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const updatePass=async(req,res)=>{
+    try {
+        const {password,newPassword}=req.body
+        if(!password)
+        return res.status(400).json({message:'Enter previous password'})
+        const passwordMatch = await bcrypt.compare(password, req.user.password)
+        if(!passwordMatch)
+        return res.status(400).json({message:'Invalid previous password'})
+        const user=req.user
+        user.password=newPassword
+        await user.save()
+        res.status(200).json({message:'Password Updated'})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     newUser,
     loginUser,
@@ -191,5 +220,7 @@ module.exports = {
     verifyOtp,
     newPass,
     getAuth,
+    newProfilePic,
+    updatePass,
     imageUploading
 };
