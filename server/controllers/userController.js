@@ -15,9 +15,13 @@ const getAuth = async (req, res) => {
     }
 }
 
+const imageUploading = ()=>{
+    
+}
+
 const newUser = async (req, res) => {
     try {
-        const { username, password, email, country, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
+        const { username, password, email, country,socials, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
         var name = firstName+" "+lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
 
@@ -30,7 +34,7 @@ const newUser = async (req, res) => {
             return res.status(400).json({message:"Email is not unique"})
         }
 
-        const user = new User({username, password, email, country, phoneNumber:phone,name});
+        const user = new User({username, password, email, country,socials, phoneNumber:phone,name});
         await user.save();
 
         res.status(200).json({ message: "Successfully Registered" });
@@ -186,5 +190,6 @@ module.exports = {
     forgotPass,
     verifyOtp,
     newPass,
-    getAuth
+    getAuth,
+    imageUploading
 };

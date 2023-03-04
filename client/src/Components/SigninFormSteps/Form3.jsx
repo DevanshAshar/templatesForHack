@@ -6,21 +6,15 @@ import {
     SimpleGrid,
     InputLeftAddon,
     InputGroup,
-    Textarea,
-    FormHelperText,
-    Container,
     Text,
+    VStack,
+    Stack,
 } from '@chakra-ui/react';
-import { useDropzone } from 'react-dropzone';
+import { FilePondComponent } from "../FilePondComponent";
+
 
 
 export default function Form3(props) {
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-    const files = acceptedFiles.map(file => (
-        <li key={file.path}>
-            {file.path} - {file.size} bytes
-        </li>
-    ));
 
     return (
         <>
@@ -36,7 +30,7 @@ export default function Form3(props) {
                         _dark={{
                             color: 'gray.50',
                         }}>
-                        Website
+                        Social media
                     </FormLabel>
                     <InputGroup size="sm">
                         <InputLeftAddon
@@ -49,46 +43,20 @@ export default function Form3(props) {
                             http://
                         </InputLeftAddon>
                         <Input
-                            type="tel"
-                            placeholder="www.example.com"
-                            focusBorderColor="brand.400"
+                            value={props.data.socials}
+                            onChange={props.setFormData}
+                            id="socials"
+                            placeholder="www.instagram.com"
                             rounded="md"
                         />
                     </InputGroup>
                 </FormControl>
 
-                <Container className='container' w={'100'} textAlign='center' border={'dashed 2px'}>
-                    <div {...getRootProps({ className: 'dropzone' })}>
-                        <input {...getInputProps()} />
-                        <Text>Drag 'n' drop image</Text>
-                    </div>
-                    <Text>Images selected: {files}</Text>
+                <Stack>
+                    <Text> Add profile picture</Text>
+                    <FilePondComponent pic={props.profilePicFile} setPic={props.setProflePicFile} allowMultiple={false} stylePanelLayout={'circle'} />
+                </Stack>
 
-                </Container>
-
-                <FormControl id="email" mt={1}>
-                    <FormLabel
-                        fontSize="sm"
-                        fontWeight="md"
-                        color="gray.700"
-                        _dark={{
-                            color: 'gray.50',
-                        }}>
-                        About
-                    </FormLabel>
-                    <Textarea
-                        placeholder="you@example.com"
-                        rows={3}
-                        shadow="sm"
-                        focusBorderColor="brand.400"
-                        fontSize={{
-                            sm: 'sm',
-                        }}
-                    />
-                    <FormHelperText>
-                        Brief description for your profile. URLs are hyperlinked.
-                    </FormHelperText>
-                </FormControl>
             </SimpleGrid>
         </>
     );

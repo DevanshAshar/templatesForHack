@@ -22,9 +22,11 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "" })
+    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "",socials:"" })
     const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "" })
     const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("")
+    const [profilePicFile,setProflePicFile] = useState({})
+    
 
     const nextButtonLogic = () => {
         if (step == 1) {
@@ -69,6 +71,7 @@ export default function SignIn() {
 
     const setFormData = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
+        console.log(data);
     }
 
     return (
@@ -101,7 +104,7 @@ export default function SignIn() {
 
                 {step === 1 ? <Form1 errors={errors} phoneNumberPrefix={phoneNumberPrefix} setPhoneNumberPrefix={setPhoneNumberPrefix} setFormData={setFormData} countries={countries} data={data} />
                     : step === 2 ? <Form2 setFormData={setFormData} errors={errors} setErrors={setErrors} data={data} />
-                        : <Form3 setFormData={setFormData} errors={setErrors} data={data} />}
+                        : <Form3 profilePicFile={profilePicFile}  setProflePicFile={setProflePicFile} setFormData={setFormData} errors={setErrors} data={data} />}
 
                 <Flex w="100%" mt={'20px'}>
 

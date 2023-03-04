@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema(
         phoneNumber: {
             type: String
         },
+        socials:{
+            String
+        },
         otp: { type: Number },
         otpExpire: { type: Number }
     }, { timestamps: true }
