@@ -4,17 +4,17 @@ const User = require('../models/userSchema')
 const authenticate = async (req, res, next) => {
     try {
         const token = req.cookies.jsonwebtoken;
-
+        console.log('1')
         if (!token) {
             res.status(400).json({ message: 'Login First' })
         }
-
+        console.log('2')
         const decryptedPayload = jwt.verify(
             token,
             process.env.SECRET_KEY
         )
         console.log(decryptedPayload)
-
+        
         const userData = await User.findOne({
             _id: decryptedPayload._id,
         });

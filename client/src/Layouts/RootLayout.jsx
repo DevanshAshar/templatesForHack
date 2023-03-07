@@ -1,4 +1,4 @@
-import {  useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from '../Components/Footer'
 import Navbar from "../Components/Navbar"
@@ -24,7 +24,6 @@ export default function RootLayout() {
     }
 
     useLayoutEffect(() => {
-        console.log(`repaint`);
         getAuth()
     }, [])
 
@@ -32,7 +31,7 @@ export default function RootLayout() {
     return (
         <main>
             <Navbar Auth={auth} />
-            <Outlet Auth={auth} />
+            <Outlet context={[auth, setAuth]} />
             <Footer />
         </main>
     )

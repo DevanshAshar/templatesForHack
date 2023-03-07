@@ -14,33 +14,41 @@ import Form2 from "../Components/SigninFormSteps/Form2";
 import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { validateData } from "../Utils/validateData";
-import Toast from "../Components/Toast";
+import { useToast } from '@chakra-ui/react'
+
 
 export default function SignIn() {
+    const toast = useToast()
     const countries = useMemo(() => {
         return Country.getAllCountries()
     }, [])
     const navigate = useNavigate();
-    const [showToast, setShowToast] = useState(false);
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", profilePic: "", country: "India", phoneNumber: "", socials: "" })
+    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", socials: "" })
     const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "" })
     const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("")
-    var profilePic = []
+    const [profilePic,setProfilePic] = useState("")    
 
     const setProfilePicLogic = (url) => {
-        profilePic.push(url)
-        console.log(profilePic)
+        setProfilePic(url.secure_url)
     }
-
-
-    const deleteProfilePicLogic = (token) => {
-        profilePic = profilePic.filter((pic) => {
-            return pic.delete_token != token
-        })
-        console.log(profilePic)
+    
+    const deleteProfilePicLogic =()=>{
+        setProfilePic("")
     }
+    
+    //  for multiple we will use array 
+    // const setProfilePicLogic = (url) => {
+    //     profilePic.push(url)
+    //     console.log(profilePic)
+    // }
+    // const deleteProfilePicLogic = (token) => {
+    //     profilePic = profilePic.filter((pic) => {
+    //         return pic.delete_token != token
+    //     })
+    //     console.log(profilePic)
+    // }
 
     const nextButtonLogic = () => {
         if (step == 1) {
@@ -66,11 +74,18 @@ export default function SignIn() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ ...data, phoneNumberPrefix, profilePic: profilePic[0].secure_url })
+            body: JSON.stringify({ ...data, phoneNumberPrefix,profilePic })
         })
         const responseInJSON = await resp.json()
         if (resp.status == 200) {
-            navigate("/abc")
+          toast({
+            status:"success",
+            title:"Account created!",
+            description:"Please login to your account now",
+            duration:3000,
+            isClosable:true
+          })
+            navigate("/login")
         } else {
             if (responseInJSON.message == "Username is not unique") {
                 setErrors({ ...errors, username: "This username is taken" })
@@ -90,10 +105,6 @@ export default function SignIn() {
         setData({ ...data, [e.target.id]: e.target.value })
         console.log(data);
     }
-
-
-
-
 
   return (
     <Flex
@@ -157,10 +168,7 @@ export default function SignIn() {
           <Button
             w="7rem"
             hidden={step === 3}
-            onClick={() => {
-              <Toast message="Step Complete" type="success"></Toast>;
-              nextButtonLogic();
-            }}
+            onClick={nextButtonLogic}
             colorScheme="teal"
             variant="outline"
           >
@@ -174,19 +182,9 @@ export default function SignIn() {
                 variant="solid"
                 type="submit"
                 _hover={{ bg: "green.600" }}
-                onClick={() => {
-                  setShowToast(true);
-                }}
               >
                 Submit
               </Button>
-              {showToast && (
-                <Toast
-                  title="Sign up complete"
-                  status="success"
-                  onClose={() => setShowToast(false)}
-                />
-              )}
             </>
           ) : null}
         </Flex>

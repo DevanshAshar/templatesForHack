@@ -21,7 +21,7 @@ import {
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { NavLink } from 'react-router-dom';
 
-const Links = ['About us', 'Contact us'];
+
 
 const Nav = ({ children }) => (
   <Link
@@ -39,16 +39,26 @@ const Nav = ({ children }) => (
 
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    to={children == "About us" ? "about" : "contact"}
+    to={children == "About us" ? "about" :
+      children == "Contact us" ?
+        "contact" :
+        "signup"}
   >
     {children}
   </Link>
 );
 
+
+
 export default function Navbar(props) {
+  const Links = ['About us', 'Contact us']
+  console.log(props.Auth)
+  if (!props.Auth) {
+    Links.push("Sign Up")
+  }
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  console.log(props.Auth)
 
 
   return (
@@ -96,7 +106,7 @@ export default function Navbar(props) {
                 minW={0}>
                 <Avatar
                   size={'sm'}
-                  src={'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
+                  src={props.Auth.profilePic||'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
                 />
               </MenuButton>
               <MenuList
@@ -108,7 +118,7 @@ export default function Navbar(props) {
                 <Center >
                   <Avatar
                     size={'2xl'}
-                    src={props?.Auth?.profilePic || 'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
+                    src={props.Auth.profilePic || 'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
                   />
                 </Center>
                 <br />

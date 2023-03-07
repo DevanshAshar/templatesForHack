@@ -27,7 +27,6 @@ export default function LoginPage() {
 
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value })
-    console.log(data);
   }
 
   const dealingWithLoginSubmit = (e) => {

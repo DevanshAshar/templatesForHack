@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer')
 
 const getAuth = async (req, res) => {
     try {
+        console.log('sss')
         res.send(req.user)
     } catch (err) {
         console.log(err)
@@ -17,7 +18,8 @@ const getAuth = async (req, res) => {
 
 const newUser = async (req, res) => {
     try {
-        const { username, password, email, country,socials, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
+        console.log(req.body)
+        const { username, password, email, country,socials, phoneNumber, firstName, lastName,profilePic,phoneNumberPrefix } = req.body
         var name = firstName+" "+lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
 
@@ -30,7 +32,7 @@ const newUser = async (req, res) => {
             return res.status(400).json({message:"Email is not unique"})
         }
 
-        const user = new User({username, password, email, country,socials, phoneNumber:phone,name});
+        const user = new User({username, password, email, country,socials, phoneNumber:phone, name,profilePic});
         await user.save();
 
         res.status(200).json({ message: "Successfully Registered" });

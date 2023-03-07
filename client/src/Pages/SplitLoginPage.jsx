@@ -17,18 +17,17 @@ import {
   InputRightElement,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Toast from "../Components/Toast";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
+import { validateData } from "../Utils/validateData";
 
 export default function SplitLoginPage() {
+  localStorage.setItem('executed', false)
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
-  const [toastData, setToastData] = useState(null); // add toast data state
   const navigate = useNavigate();
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
-    console.log(data);
   };
 
   const dealingWithLoginPageSubmission = async (e) => {
@@ -42,14 +41,11 @@ export default function SplitLoginPage() {
         credentials: "include",
         body: JSON.stringify(data),
       });
-      const responseInJSON = await response.json();
+      
       if (response.status == 200) {
-        navigate("/");
-        setToastData({ title: "Login successful", status: "success" }); // set success toast data
-        //if there is role then use responseInJSON.role
+        navigate("/")
       } else {
         //show that wrong credentials
-        setToastData({ title: "Invalid credentials", status: "error" }); // set error toast data
       }
     } else {
       //error
@@ -58,13 +54,6 @@ export default function SplitLoginPage() {
 
   return (
     <>
-      {toastData && (
-        <Toast
-          title={toastData.title}
-          status={toastData.status}
-          onClose={() => setToastData(null)}
-        />
-      )}
       <Stack
         minH="92vh"
         direction={{ base: "column", md: "row" }}
