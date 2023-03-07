@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import {  useLayoutEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from '../Components/Footer'
 import Navbar from "../Components/Navbar"

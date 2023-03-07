@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     Progress,
     Box,
@@ -22,11 +22,23 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "",socials:"" })
-    const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", profilePic: "" })
+    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", profilePic: "", country: "India", phoneNumber: "", socials: "" })
+    const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "" })
     const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("")
-    const [profilePicFile,setProflePicFile] = useState({})
-    
+    var profilePic = []
+
+    const setProfilePicLogic = (url) => {
+        profilePic.push(url)
+        console.log(profilePic)
+    }
+
+
+    const deleteProfilePicLogic = (token) => {
+        profilePic = profilePic.filter((pic) => {
+            return pic.delete_token != token
+        })
+        console.log(profilePic)
+    }
 
     const nextButtonLogic = () => {
         if (step == 1) {
@@ -53,14 +65,14 @@ export default function SignIn() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ ...data, phoneNumberPrefix })
+            body: JSON.stringify({ ...data, phoneNumberPrefix, profilePic: profilePic[0].secure_url })
         })
         const responseInJSON = await resp.json()
         if (resp.status == 200) {
             navigate("/abc")
         } else {
             if (responseInJSON.message == "Username is not unique") {
-                setErrors({ ...errors, username: "This username is taken"})
+                setErrors({ ...errors, username: "This username is taken" })
                 setStep(2)
             } else if (responseInJSON.message == "Email is not unique") {
                 setErrors({ ...errors, email: "An account already exists for this email" })
@@ -69,10 +81,16 @@ export default function SignIn() {
         }
     }
 
+    const setProflePic = (pfp) => {
+        setData({ ...data, profilePic: pfp })
+    }
+
     const setFormData = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
         console.log(data);
     }
+
+
 
     return (
         <Flex
@@ -104,7 +122,7 @@ export default function SignIn() {
 
                 {step === 1 ? <Form1 errors={errors} phoneNumberPrefix={phoneNumberPrefix} setPhoneNumberPrefix={setPhoneNumberPrefix} setFormData={setFormData} countries={countries} data={data} />
                     : step === 2 ? <Form2 setFormData={setFormData} errors={errors} setErrors={setErrors} data={data} />
-                        : <Form3 profilePicFile={profilePicFile}  setProflePicFile={setProflePicFile} setFormData={setFormData} errors={setErrors} data={data} />}
+                        : <Form3 profilePic={profilePic} setLogic={setProfilePicLogic} deleteLogic={deleteProfilePicLogic} setFormData={setFormData} errors={setErrors} data={data} />}
 
                 <Flex w="100%" mt={'20px'}>
 

@@ -12,8 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { FilePondComponent } from "../FilePondComponent";
 
-
-
 export default function Form3(props) {
 
     return (
@@ -54,7 +52,7 @@ export default function Form3(props) {
 
                 <Stack>
                     <Text> Add profile picture</Text>
-                    <FilePondComponent pic={props.profilePicFile} setPic={props.setProflePicFile} allowMultiple={false} stylePanelLayout={'circle'} />
+                    <FilePondComponent deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
                 </Stack>
 
             </SimpleGrid>

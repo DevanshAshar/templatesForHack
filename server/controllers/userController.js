@@ -15,10 +15,6 @@ const getAuth = async (req, res) => {
     }
 }
 
-const imageUploading = ()=>{
-    
-}
-
 const newUser = async (req, res) => {
     try {
         const { username, password, email, country,socials, phoneNumber, firstName, lastName,phoneNumberPrefix } = req.body
@@ -222,5 +218,4 @@ module.exports = {
     getAuth,
     newProfilePic,
     updatePass,
-    imageUploading
 };
