@@ -52,7 +52,7 @@ const Nav = ({ children }) => (
 
 export default function Navbar(props) {
   const Links = ['About us', 'Contact us']
-  console.log(props.Auth)
+
   if (!props.Auth) {
     Links.push("Sign Up")
   }

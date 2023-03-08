@@ -14,12 +14,15 @@ import ErrorPage from "./Pages/ErrorPage";
 import SplitLoginPage from "./Pages/SplitLoginPage";
 import SignUp from "./Pages/SignUp";
 import ForgotPassword from "./Pages/ForgotPassword";
+import AuthLayout from "./Layouts/AuthLayout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
 
-      <Route index element={<Home />} />
+      <Route element={< AuthLayout/>}>
+        <Route index element={<Home />} />
+      </Route>
 
       <Route path="login" element={<SplitLoginPage />} />
       <Route path="about" element={<AboutUs />} />
@@ -28,7 +31,7 @@ const router = createBrowserRouter(
       <Route path="abc" element={<LoginPage />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
 
-      <Route path="*" element={<ErrorPage />}></Route>
+      <Route path="*" element={<ErrorPage />} />
     </Route>
   )
 );
