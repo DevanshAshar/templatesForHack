@@ -60,6 +60,13 @@ export default function Navbar(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const dealingWithLogout = async() => {
+    const res = await fetch("http://localhost:5000/user/logout",{
+      method:"GET",
+      credentials:"include"
+    })
+    window.location.reload(true)
+  }
 
   return (
     <>
@@ -106,7 +113,7 @@ export default function Navbar(props) {
                 minW={0}>
                 <Avatar
                   size={'sm'}
-                  src={props.Auth.profilePic||'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
+                  src={props.Auth.profilePic || 'https://cdn-icons-png.flaticon.com/512/4908/4908415.png'}
                 />
               </MenuButton>
               <MenuList
@@ -127,8 +134,10 @@ export default function Navbar(props) {
                 </Center>
                 <br />
                 <MenuDivider />
+
                 <MenuItem>Account Settings</MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={dealingWithLogout}>Logout</MenuItem>
+
               </MenuList>
             </Menu>
           </Flex>

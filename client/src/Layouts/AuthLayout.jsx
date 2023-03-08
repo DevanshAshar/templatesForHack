@@ -14,7 +14,7 @@ export default function AuthLayout() {
         },
         credentials: "include"
       })
-
+ 
       const respInJSON = await resp.json()
       if (resp.status == 200) {
         setAuth(respInJSON)
