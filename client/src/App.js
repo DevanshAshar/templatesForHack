@@ -19,8 +19,7 @@ import AuthLayout from "./Layouts/AuthLayout";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-
-      <Route element={< AuthLayout/>}>
+      <Route element={<AuthLayout />}>
         <Route index element={<Home />} />
       </Route>
 
