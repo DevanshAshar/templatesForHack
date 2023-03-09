@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from "react";
 import {
   Progress,
   Box,
@@ -13,53 +13,77 @@ import Form1 from "../Components/SigninFormSteps/Form1";
 import Form2 from "../Components/SigninFormSteps/Form2";
 import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
-import { validateData } from "../Utils/validateData";
-import { useToast } from '@chakra-ui/react'
-
+import { ValidateData } from "../Utils/ValidateData";
+import { useToast } from "@chakra-ui/react";
 
 export default function SignIn() {
-    const toast = useToast()
-    const countries = useMemo(() => {
-        return Country.getAllCountries()
-    }, [])
-    const navigate = useNavigate();
-    const [step, setStep] = useState(1);
-    const [progress, setProgress] = useState(33.33);
-    const [data, setData] = useState({ firstName: "", username: "", confirmPassword: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "", socials: "" })
-    const [errors, setErrors] = useState({ firstName: "", username: "", lastName: "", email: "", password: "", country: "India", phoneNumber: "" })
-    const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("")
-    const [profilePic,setProfilePic] = useState("")    
+  const toast = useToast();
+  const countries = useMemo(() => {
+    return Country.getAllCountries();
+  }, []);
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [progress, setProgress] = useState(33.33);
+  const [data, setData] = useState({
+    firstName: "",
+    username: "",
+    confirmPassword: "",
+    lastName: "",
+    email: "",
+    password: "",
+    country: "India",
+    phoneNumber: "",
+    socials: "",
+  });
+  const [errors, setErrors] = useState({
+    firstName: "",
+    username: "",
+    lastName: "",
+    email: "",
+    password: "",
+    country: "India",
+    phoneNumber: "",
+  });
+  const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("");
+  const [profilePic, setProfilePic] = useState("");
 
-    const setProfilePicLogic = (url) => {
-        setProfilePic(url.secure_url)
+  const setProfilePicLogic = (url) => {
+    setProfilePic(url.secure_url);
+  };
+
+  const deleteProfilePicLogic = () => {
+    setProfilePic("");
+  };
+
+  //  for multiple we will use array
+  // const setProfilePicLogic = (url) => {
+  //     profilePic.push(url)
+  //     console.log(profilePic)
+  // }
+  // const deleteProfilePicLogic = (token) => {
+  //     profilePic = profilePic.filter((pic) => {
+  //         return pic.delete_token != token
+  //     })
+  //     console.log(profilePic)
+  // }
+
+  const nextButtonLogic = async () => {
+    if (step == 1) {
+      var err = await ValidateData({
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        phoneNumberPrefix: phoneNumberPrefix,
+      });
+      setErrors(err);
+      console.log(err);
+    } else if (step == 2) {
+      var err = ValidateData({
+        username: data.username,
+        password: data.password,
+      });
+      setErrors(err);
+    } else {
     }
-    
-    const deleteProfilePicLogic =()=>{
-        setProfilePic("")
-    }
-    
-    //  for multiple we will use array 
-    // const setProfilePicLogic = (url) => {
-    //     profilePic.push(url)
-    //     console.log(profilePic)
-    // }
-    // const deleteProfilePicLogic = (token) => {
-    //     profilePic = profilePic.filter((pic) => {
-    //         return pic.delete_token != token
-    //     })
-    //     console.log(profilePic)
-    // }
-
-    const nextButtonLogic = () => {
-        if (step == 1) {
-            var err = validateData({ phoneNumber: data.phoneNumber, email: data.email, phoneNumberPrefix: phoneNumberPrefix })
-            setErrors(err)
-        } else if (step == 2) {
-            var err = validateData({ username: data.username, password: data.password, })
-            setErrors(err)
-        } else {
-
-        }
 
     if (err.noErrors === true && data.password === data.confirmPassword) {
       setStep(step + 1);
@@ -67,44 +91,46 @@ export default function SignIn() {
     }
   };
 
-    const dealingWithSignInFormSubmission = async (e) => {
-        e.preventDefault()
-        const resp = await fetch("http://localhost:5000/user/newUser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ...data, phoneNumberPrefix,profilePic })
-        })
-        const responseInJSON = await resp.json()
-        if (resp.status == 200) {
-          toast({
-            status:"success",
-            title:"Account created!",
-            description:"Please login to your account now",
-            duration:3000,
-            isClosable:true
-          })
-            navigate("/login")
-        } else {
-            if (responseInJSON.message == "Username is not unique") {
-                setErrors({ ...errors, username: "This username is taken" })
-                setStep(2)
-            } else if (responseInJSON.message == "Email is not unique") {
-                setErrors({ ...errors, email: "An account already exists for this email" })
-                setStep(1)
-            }
-        }
+  const dealingWithSignInFormSubmission = async (e) => {
+    e.preventDefault();
+    const resp = await fetch("http://localhost:5000/user/newUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data, phoneNumberPrefix, profilePic }),
+    });
+    const responseInJSON = await resp.json();
+    if (resp.status == 200) {
+      toast({
+        status: "success",
+        title: "Account created!",
+        description: "Please login to your account now",
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate("/login");
+    } else {
+      if (responseInJSON.message == "Username is not unique") {
+        setErrors({ ...errors, username: "This username is taken" });
+        setStep(2);
+      } else if (responseInJSON.message == "Email is not unique") {
+        setErrors({
+          ...errors,
+          email: "An account already exists for this email",
+        });
+        setStep(1);
+      }
     }
+  };
 
-    const setProflePic = (pfp) => {
-        setData({ ...data, profilePic: pfp })
-    }
+  const setProflePic = (pfp) => {
+    setData({ ...data, profilePic: pfp });
+  };
 
-    const setFormData = (e) => {
-        setData({ ...data, [e.target.id]: e.target.value })
-        console.log(data);
-    }
+  const setFormData = (e) => {
+    setData({ ...data, [e.target.id]: e.target.value });
+  };
 
   return (
     <Flex
@@ -136,9 +162,32 @@ export default function SignIn() {
           isAnimated
         ></Progress>
 
-                {step === 1 ? <Form1 errors={errors} phoneNumberPrefix={phoneNumberPrefix} setPhoneNumberPrefix={setPhoneNumberPrefix} setFormData={setFormData} countries={countries} data={data} />
-                    : step === 2 ? <Form2 setFormData={setFormData} errors={errors} setErrors={setErrors} data={data} />
-                        : <Form3 profilePic={profilePic} setLogic={setProfilePicLogic} deleteLogic={deleteProfilePicLogic} setFormData={setFormData} errors={setErrors} data={data} />}
+        {step === 1 ? (
+          <Form1
+            errors={errors}
+            phoneNumberPrefix={phoneNumberPrefix}
+            setPhoneNumberPrefix={setPhoneNumberPrefix}
+            setFormData={setFormData}
+            countries={countries}
+            data={data}
+          />
+        ) : step === 2 ? (
+          <Form2
+            setFormData={setFormData}
+            errors={errors}
+            setErrors={setErrors}
+            data={data}
+          />
+        ) : (
+          <Form3
+            profilePic={profilePic}
+            setLogic={setProfilePicLogic}
+            deleteLogic={deleteProfilePicLogic}
+            setFormData={setFormData}
+            errors={setErrors}
+            data={data}
+          />
+        )}
 
         <Flex w="100%" mt={"20px"}>
           <Tooltip

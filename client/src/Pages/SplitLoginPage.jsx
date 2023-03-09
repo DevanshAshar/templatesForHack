@@ -16,13 +16,14 @@ import {
   InputGroup,
   InputRightElement,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
-import { validateData } from "../Utils/validateData";
 
 export default function SplitLoginPage() {
-  localStorage.setItem('executed', false)
+  const toast = useToast();
+  localStorage.setItem("executed", false);
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
@@ -30,25 +31,45 @@ export default function SplitLoginPage() {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
+  console.log(data);
+
   const dealingWithLoginPageSubmission = async (e) => {
     e.preventDefault();
-    if (true) {
-      const response = await fetch("http://localhost:5000/user/loginUser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(data),
+    const response = await fetch("http://localhost:5000/user/loginUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+
+    if (response.status == 200) {
+      navigate("/");
+      toast({
+        title: "Login Successful!",
+        status: "success",
+        isClosable: true,
+        autoClose: 300,
+        position: "bottom-right",
       });
-      
-      if (response.status == 200) {
-        navigate("/")
-      } else {
-        //show that wrong credentials
-      }
+    } else if (data.email === "" || data.password === "") {
+      toast({
+        title: "Field(s) cannot be empty!",
+        status: "error",
+        isClosable: true,
+        autoClose: 300,
+        position: "bottom-right",
+      });
     } else {
-      //error
+      //show that wrong credentials
+      toast({
+        title: "Invalid Credentials",
+        status: "error",
+        isClosable: true,
+        autoClose: 300,
+        position: "bottom-right",
+      });
     }
   };
 
@@ -108,26 +129,28 @@ export default function SplitLoginPage() {
                 </Container>
 
                 <Container w={"100%"}>
-                  <FormControl id="password" isRequired>
-                    <FormLabel>Password</FormLabel>
-                    <InputGroup>
-                      <Input
-                        onChange={setFormData}
-                        type={showPassword ? "text" : "password"}
-                        value={data.password}
-                      />
-                      <InputRightElement h={"full"}>
-                        <Button
-                          variant={"ghost"}
-                          onClick={() =>
-                            setShowPassword((showPassword) => !showPassword)
-                          }
-                        >
-                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                  </FormControl>
+                  <div className="parent">
+                    <FormControl id="password" isRequired>
+                      <FormLabel>Password</FormLabel>
+                      <InputGroup>
+                        <Input
+                          onChange={setFormData}
+                          type={showPassword ? "text" : "password"}
+                          value={data.password}
+                        />
+                        <InputRightElement h={"full"}>
+                          <Button
+                            variant={"ghost"}
+                            onClick={() =>
+                              setShowPassword((showPassword) => !showPassword)
+                            }
+                          >
+                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                  </div>
                 </Container>
               </VStack>
               <VStack w="100%">
