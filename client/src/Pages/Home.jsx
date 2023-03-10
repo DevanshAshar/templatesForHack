@@ -1,13 +1,16 @@
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import MapWithMarker from "../Components/MapWithMarker";
 
 export default function Home() {
-  const [auth, setAuth] = useOutletContext()
+  const [auth, setAuth] = useOutletContext();
 
-  console.log(auth)
+  console.log(auth);
 
   return (
     <>
-      HOME!!
+      <h1>HOME!!</h1>
+      <MapWithMarker />
     </>
-  )
+  );
 }
