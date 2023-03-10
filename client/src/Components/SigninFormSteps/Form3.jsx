@@ -56,7 +56,7 @@ export default function Form3(props) {
 
                 <Stack>
                     <Text> Add profile picture</Text>
-                    <FilePondComponent deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
+                    <FilePondComponent profilePic={props.profilePic} deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
                 </Stack>
 
             </SimpleGrid>
