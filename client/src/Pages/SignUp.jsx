@@ -15,6 +15,7 @@ import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { ValidateData } from "../Utils/ValidateData";
 import { useToast } from "@chakra-ui/react";
+import Form4 from "../Components/SigninFormSteps/Form4";
 
 export default function SignIn() {
   const toast = useToast();
@@ -22,7 +23,7 @@ export default function SignIn() {
     return Country.getAllCountries();
   }, []);
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [progress, setProgress] = useState(33.33);
   const [data, setData] = useState({
     firstName: "",
@@ -34,7 +35,11 @@ export default function SignIn() {
     country: "India",
     phoneNumber: "",
     socials: "",
+    
   });
+  const setFormData = (e) => {
+    setData({ ...data, [e.target.id]: e.target.value });
+  };
   const [errors, setErrors] = useState({
     firstName: "",
     username: "",
@@ -43,6 +48,17 @@ export default function SignIn() {
     password: "",
     country: "India",
     phoneNumber: "",
+    
+    skills:"",
+    yearsOfExperience:0,
+    highestLevelOfEducation:"",
+    Field:"",
+    City:"",
+    Pincode:"",
+
+    companyName:"",
+    BasedOutOfLocation:"",
+    pincode:""
   });
   const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("");
   const [profilePic, setProfilePic] = useState("");
@@ -72,13 +88,13 @@ export default function SignIn() {
       var err = await ValidateData({
         phoneNumber: data.phoneNumber,
         email: data.email,
-        country:data.country,
+        country: data.country,
         phoneNumberPrefix: phoneNumberPrefix,
       });
       setErrors(err);
       console.log(err);
     } else if (step == 2) {
-      var err = ValidateData({
+      var err = await ValidateData({
         username: data.username,
         password: data.password,
       });
@@ -86,10 +102,12 @@ export default function SignIn() {
     } else {
     }
 
-    if (err.noErrors === true && data.password === data.confirmPassword) {
+    if (err.noErrors === true) {
+      console.log('asdasd')
       setStep(step + 1);
       setProgress(progress + 33.33);
     }
+
   };
 
   const dealingWithSignInFormSubmission = async (e) => {
@@ -129,9 +147,6 @@ export default function SignIn() {
     setData({ ...data, profilePic: pfp });
   };
 
-  const setFormData = (e) => {
-    setData({ ...data, [e.target.id]: e.target.value });
-  };
 
   return (
     <Flex
@@ -179,7 +194,7 @@ export default function SignIn() {
             setErrors={setErrors}
             data={data}
           />
-        ) : (
+        ) : step === 3 ? (
           <Form3
             profilePic={profilePic}
             setLogic={setProfilePicLogic}
@@ -188,6 +203,8 @@ export default function SignIn() {
             errors={setErrors}
             data={data}
           />
+        ) : (
+          <Form4 />
         )}
 
         <Flex w="100%" mt={"20px"}>
@@ -224,6 +241,7 @@ export default function SignIn() {
           >
             Next
           </Button>
+
           {step === 3 ? (
             <>
               <Button

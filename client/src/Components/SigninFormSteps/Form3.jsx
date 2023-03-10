@@ -7,7 +7,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Text,
-  VStack,
   Stack,
 } from "@chakra-ui/react";
 import { FilePondComponent } from "../FilePondComponent";

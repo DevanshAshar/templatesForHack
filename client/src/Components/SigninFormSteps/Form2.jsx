@@ -45,6 +45,7 @@ export default function Form2(props) {
             id="username"
             value={props.data.username}
             onChange={props.setFormData}
+            mb={'10px'}
           />
           {props.errors.username == "" ? (
             <FormHelperText></FormHelperText>
@@ -62,7 +63,7 @@ export default function Form2(props) {
           isInvalid={props.errors.password}
         >
           <FormLabel>Password</FormLabel>
-          <InputGroup>
+          <InputGroup mb={'17px'}>
             <Input
               type={showPassword ? "text" : "password"}
               value={props.data.password}
@@ -78,13 +79,6 @@ export default function Form2(props) {
             </InputRightElement>
           </InputGroup>
           <PasswordStrengthBar password={props.data.password} />
-          {props.errors.password == "" ? (
-            <FormHelperText>
-              Please dont tell your password to anyone!
-            </FormHelperText>
-          ) : (
-            <FormErrorMessage>{props.errors.password}</FormErrorMessage>
-          )}
         </FormControl>
       </div>
 

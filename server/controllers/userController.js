@@ -19,27 +19,27 @@ const getAuth = async (req, res) => {
 const newUser = async (req, res) => {
     try {
         console.log(req.body)
-        const { username, password, email, country,socials, phoneNumber, firstName, lastName,profilePic,phoneNumberPrefix } = req.body
-        var name = firstName+" "+lastName
+        const { username, password, email, country, socials, phoneNumber, firstName, lastName, profilePic, phoneNumberPrefix } = req.body
+        var name = firstName + " " + lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
 
         const userExist = await User.findOne({ username: username })
         const emailExist = await User.findOne({ email: email })
-        if(userExist){
-            return res.status(400).json({message:"Username is not unique"})
+        if (userExist) {
+            return res.status(400).json({ message: "Username is not unique" })
         }
-        if(emailExist){
-            return res.status(400).json({message:"Email is not unique"})
+        if (emailExist) {
+            return res.status(400).json({ message: "Email is not unique" })
         }
 
-        const user = new User({username, password, email, country,socials, phoneNumber:phone, name,profilePic});
+        const user = new User({ username, password, email, country, socials, phoneNumber: phone, name, profilePic });
         await user.save();
 
         res.status(200).json({ message: "Successfully Registered" });
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json({message:error})
+        return res.status(500).json({ message: error })
     }
 };
 
@@ -85,7 +85,7 @@ const loginUser = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        return res.status(234).json({message:"f"})
+        return res.status(234).json({ message: "f" })
     }
 };
 
@@ -113,7 +113,7 @@ const feedback = async (req, res) => {
 const forgotPass = async (req, res) => {
     const { email } = req.body;
     try {
-        const userData = await User.findOne({ email: req.body.email });
+        const userData = await User.findOne({ email: email });
         if (!userData)
             return res.status(400).json({ message: "no user found" });
         const otp = Math.floor(Math.random() * 10000);
@@ -144,9 +144,11 @@ const forgotPass = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
     try {
+        console.log(req.body)
         const { otp, email } = req.body;
         let currentTime = new Date().getTime()
         const userData = await User.findOne({ email: email });
+        console.log(userData)
         let diff = userData.otpExpire - currentTime
         if (diff < 0)
             return res.status(400).json({ message: 'Time limit exceeded' })
@@ -164,14 +166,10 @@ const verifyOtp = async (req, res) => {
 
 const newPass = async (req, res) => {
     try {
-        const { password, cpassword, email } = req.body;
+        const { password, email } = req.body;
         const userData = await User.findOne({ email: email });
-        if (!password || !cpassword)
+        if (!password)
             return res.status(400).json({ message: "pls enter details" });
-        if (password != cpassword)
-            return res
-                .status(400)
-                .json({ message: "password and confirm password dont match" });
         userData.password = password;
         await userData.save();
         res.status(200).json({ message: "password updated" });
@@ -180,30 +178,30 @@ const newPass = async (req, res) => {
     }
 };
 
-const newProfilePic=async(req,res)=>{
+const newProfilePic = async (req, res) => {
     try {
-       const {newPfp}=req.body
-       if(!newPfp)
-       return res.status(400).json({message:'Enter a profile pic'})
-       await User.findByIdAndUpdate(req.user._id,{profilePic:newPfp})
-       res.status(200).json({message:'Profile pic updated'})
+        const { newPfp } = req.body
+        if (!newPfp)
+            return res.status(400).json({ message: 'Enter a profile pic' })
+        await User.findByIdAndUpdate(req.user._id, { profilePic: newPfp })
+        res.status(200).json({ message: 'Profile pic updated' })
     } catch (error) {
         console.log(error)
     }
 }
 
-const updatePass=async(req,res)=>{
+const updatePass = async (req, res) => {
     try {
-        const {password,newPassword}=req.body
-        if(!password)
-        return res.status(400).json({message:'Enter previous password'})
+        const { password, newPassword } = req.body
+        if (!password)
+            return res.status(400).json({ message: 'Enter previous password' })
         const passwordMatch = await bcrypt.compare(password, req.user.password)
-        if(!passwordMatch)
-        return res.status(400).json({message:'Invalid previous password'})
-        const user=req.user
-        user.password=newPassword
+        if (!passwordMatch)
+            return res.status(400).json({ message: 'Invalid previous password' })
+        const user = req.user
+        user.password = newPassword
         await user.save()
-        res.status(200).json({message:'Password Updated'})
+        res.status(200).json({ message: 'Password Updated' })
     } catch (error) {
         console.log(error)
     }

@@ -1,22 +1,22 @@
-*{
+* {
     font-family: 'Quicksand', sans-serif;
 }
 
-main{
+main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-footer{
-    bottom:0;
+footer {
+    bottom: 0;
     width: 100%;
     position: absolute;
     text-align: center;
     overflow: hidden;
 }
 
-nav a.active{
+nav a.active {
     font-weight: bold;
 }
 
