@@ -15,13 +15,21 @@ import SplitLoginPage from "./Pages/SplitLoginPage";
 import SignUp from "./Pages/SignUp";
 import ForgotPassword from "./Pages/ForgotPassword";
 import AuthLayout from "./Layouts/AuthLayout";
+import EmployeePage from "./Pages/EmployeePage";
+import RecruiterPage from "./Pages/RecruiterPage";
+import AdminPage from "./Pages/AdminPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route element={<AuthLayout />}>
         <Route index element={<Home />} />
+        <Route path="employee" element={<EmployeePage />} />
+        <Route path="recruiter" element={<RecruiterPage />} />
+        <Route path="admin" element={<AdminPage />} />
+        
       </Route>
+
 
       <Route path="login" element={<SplitLoginPage />} />
       <Route path="about" element={<AboutUs />} />

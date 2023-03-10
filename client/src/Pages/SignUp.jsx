@@ -25,7 +25,7 @@ export default function SignIn() {
     return Country.getAllCountries();
   }, []);
   const navigate = useNavigate();
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(20);
   const [data, setData] = useState({
     firstName: "",

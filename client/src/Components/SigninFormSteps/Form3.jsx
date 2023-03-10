@@ -48,7 +48,7 @@ export default function Form3(props) {
               value={props.data.socials}
               onChange={props.setFormData}
               id="socials"
-              placeholder="www.instagram.com"
+              placeholder="www.linkedin.com"
               rounded="md"
             />
           </InputGroup>

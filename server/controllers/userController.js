@@ -19,9 +19,10 @@ const getAuth = async (req, res) => {
 const newUser = async (req, res) => {
     try {
         console.log(req.body)
-        const { username, password, email, country, socials, phoneNumber, firstName, lastName, profilePic, phoneNumberPrefix } = req.body
+        const { username, password, email, country, socials, phoneNumber,role, firstName, lastName, profilePic, phoneNumberPrefix } = req.body
         var name = firstName + " " + lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
+        console.log(role)
 
         const userExist = await User.findOne({ username: username })
         const emailExist = await User.findOne({ email: email })
@@ -32,7 +33,7 @@ const newUser = async (req, res) => {
             return res.status(400).json({ message: "Email is not unique" })
         }
 
-        const user = new User({ username, password, email, country, socials, phoneNumber: phone, name, profilePic });
+        const user = new User({ username, password, email, country,role, socials, phoneNumber: phone, name, profilePic });
         await user.save();
 
         res.status(200).json({ message: "Successfully Registered" });
