@@ -2,7 +2,9 @@
 // have in youre form then if there is no error in ALL the attributes it sets noErrors as true
 // else the error message will be shown in the respective attribute (if an attribute has no error its "")
 // hence you can use this to display the error in UI using error element easily
+
 export const ValidateData = async (data) => {
+    console.log(data)
   const dataToBeReturned = { ...data, noErrors: true };
   if ("username" in data) {
     if (data.username == "") {
@@ -19,34 +21,31 @@ export const ValidateData = async (data) => {
       dataToBeReturned.email = "Email is required";
       dataToBeReturned.noErrors = false;
     } else if (!data.email.match(mailformat)) {
-      dataToBeReturned.email = "Invalid email format";
+      dataToBeReturned.email = "Please enter a proper email";
       dataToBeReturned.noErrors = false;
     } else {
       dataToBeReturned.email = "";
     }
   }
-  /*   console.log(process.env.REACT_APP_number_secret_key); */
 
   if ("phoneNumber" in data) {
-    var prefix = data.phoneNumberPrefix;
-    //"3782a1e46f204055b19afd48ee7bc2a0"
-    const api_key = "api key goes here :)";
-    const url =
-      "https://phonevalidation.abstractapi.com/v1/?api_key=" +
-      api_key +
-      "&phone=" +
-      prefix +
-      data.phoneNumber;
-    const res = await fetch(url);
-    const resInJSON = await res.json();
-    console.log(res);
-    console.log(resInJSON);
-    if (data.phoneNumber == "") {
-      dataToBeReturned.phoneNumber = "Phone number is required";
-      dataToBeReturned.noErrors = false;
-    } else {
+      if (data.phoneNumber == "") {
+          dataToBeReturned.phoneNumber = "Phone number is required";
+          dataToBeReturned.noErrors = false;
+        } else {
+        var prefix = data.phoneNumberPrefix;
+        const api_key = process.env.REACT_APP_PHONENUMBER_API_KEY;
+        const url =
+          "https://phonevalidation.abstractapi.com/v1/?api_key=" +
+          api_key +
+          "&phone=" +
+          prefix +
+          data.phoneNumber;
+        const res = await fetch(url);
+        const resInJSON = await res.json();
+        console.log(resInJSON)
       if (!resInJSON.valid) {
-        dataToBeReturned.phoneNumber = "Phone number is invalid";
+        dataToBeReturned.phoneNumber = `Phone number is invalid for ${data.country}`;
         dataToBeReturned.noErrors = false;
       } else {
         dataToBeReturned.phoneNumber = "";

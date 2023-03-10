@@ -72,6 +72,7 @@ export default function SignIn() {
       var err = await ValidateData({
         phoneNumber: data.phoneNumber,
         email: data.email,
+        country:data.country,
         phoneNumberPrefix: phoneNumberPrefix,
       });
       setErrors(err);
