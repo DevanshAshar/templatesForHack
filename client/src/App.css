@@ -1,26 +1,25 @@
-*{
-    font-family: 'Quicksand', sans-serif;
+* {
+  font-family: "Quicksand", sans-serif;
 }
 
-main{
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-footer{
-    bottom:0;
-    width: 100%;
-    position: absolute;
-    text-align: center;
-    overflow: hidden;
+footer {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  overflow: hidden;
 }
 
-nav a.active{
-    font-weight: bold;
+nav a.active {
+  font-weight: bold;
 }
 
 .parent:focus-within:focus-within label {
-    font-weight: bold;
+  font-weight: bold;
 }
-
