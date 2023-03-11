@@ -7,7 +7,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Text,
-  VStack,
   Stack,
 } from "@chakra-ui/react";
 import { FilePondComponent } from "../FilePondComponent";
@@ -49,7 +48,7 @@ export default function Form3(props) {
               value={props.data.socials}
               onChange={props.setFormData}
               id="socials"
-              placeholder="www.instagram.com"
+              placeholder="www.linkedin.com"
               rounded="md"
             />
           </InputGroup>
@@ -57,7 +56,7 @@ export default function Form3(props) {
 
                 <Stack>
                     <Text> Add profile picture</Text>
-                    <FilePondComponent deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
+                    <FilePondComponent profilePic={props.profilePic} deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
                 </Stack>
 
             </SimpleGrid>

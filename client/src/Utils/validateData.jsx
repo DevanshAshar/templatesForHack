@@ -67,6 +67,7 @@ export const ValidateData = async (data) => {
       dataToBeReturned.password = "Password is required";
       dataToBeReturned.noErrors = false;
     } else if (false) {
+      
     } else {
       dataToBeReturned.password = "";
     }

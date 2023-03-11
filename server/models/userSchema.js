@@ -21,12 +21,14 @@ const userSchema = new mongoose.Schema(
         },
         name: {
             type: String
+        },role:{
+            type:String
         },
         phoneNumber: {
             type: String
         },
         socials:{
-            String
+            type:String
         },
         otp: { type: Number },
         otpExpire: { type: Number }

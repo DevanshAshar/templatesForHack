@@ -15,6 +15,9 @@ import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { ValidateData } from "../Utils/ValidateData";
 import { useToast } from "@chakra-ui/react";
+import Form4 from "../Components/SigninFormSteps/Form4";
+import Form5Employee from "../Components/SigninFormSteps/Form5Employee";
+import Form5Recruiter from "../Components/SigninFormSteps/Form5Recruiter";
 
 export default function SignIn() {
   const toast = useToast();
@@ -23,7 +26,7 @@ export default function SignIn() {
   }, []);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(33.33);
+  const [progress, setProgress] = useState(20);
   const [data, setData] = useState({
     firstName: "",
     username: "",
@@ -34,7 +37,24 @@ export default function SignIn() {
     country: "India",
     phoneNumber: "",
     socials: "",
+
+    role: "",
+
+    skills: "",
+    yearsOfExperience: 0,
+    highestLevelOfEducation: "",
+    Field: "",
+    City: "",
+    Pincode: "",
+
+    companyName: "",
+    BasedOutOfLocation: "",
+    pincode: ""
+
   });
+  const setFormData = (e) => {
+    setData({ ...data, [e.target.id]: e.target.value });
+  };
   const [errors, setErrors] = useState({
     firstName: "",
     username: "",
@@ -55,6 +75,12 @@ export default function SignIn() {
     setProfilePic("");
   };
 
+  const setRole = (role) => {
+    setData({ ...data, role: role })
+    setStep(step + 1);
+    setProgress(progress + 20);
+  }
+
   //  for multiple we will use array
   // const setProfilePicLogic = (url) => {
   //     profilePic.push(url)
@@ -72,24 +98,27 @@ export default function SignIn() {
       var err = await ValidateData({
         phoneNumber: data.phoneNumber,
         email: data.email,
-        country:data.country,
+        country: data.country,
         phoneNumberPrefix: phoneNumberPrefix,
       });
       setErrors(err);
       console.log(err);
     } else if (step == 2) {
-      var err = ValidateData({
+      var err = await ValidateData({
         username: data.username,
         password: data.password,
       });
       setErrors(err);
     } else {
+      err = { noErrors: true }
     }
 
-    if (err.noErrors === true && data.password === data.confirmPassword) {
+    if (err.noErrors === true) {
+      console.log('asdasd11')
       setStep(step + 1);
-      setProgress(progress + 33.33);
+      setProgress(progress + 20);
     }
+
   };
 
   const dealingWithSignInFormSubmission = async (e) => {
@@ -125,13 +154,6 @@ export default function SignIn() {
     }
   };
 
-  const setProflePic = (pfp) => {
-    setData({ ...data, profilePic: pfp });
-  };
-
-  const setFormData = (e) => {
-    setData({ ...data, [e.target.id]: e.target.value });
-  };
 
   return (
     <Flex
@@ -179,16 +201,30 @@ export default function SignIn() {
             setErrors={setErrors}
             data={data}
           />
-        ) : (
+        ) : step === 3 ? (
           <Form3
             profilePic={profilePic}
             setLogic={setProfilePicLogic}
             deleteLogic={deleteProfilePicLogic}
             setFormData={setFormData}
-            errors={setErrors}
             data={data}
+            errors={setErrors}
           />
-        )}
+        ) : step == 4 ? (
+          <Form4 role={data.role} setRole={setRole} />
+        ) :
+          data.role == "Recruiter" ?
+            (
+              <Form5Recruiter setFormData={setFormData}
+                data={data}
+              />
+            ) :
+            (< Form5Employee setFormData={setFormData}
+              data={data}
+            />)
+
+
+        }
 
         <Flex w="100%" mt={"20px"}>
           <Tooltip
@@ -201,7 +237,7 @@ export default function SignIn() {
             <Button
               onClick={() => {
                 setStep(step - 1);
-                setProgress(progress - 33.33);
+                setProgress(progress - 20);
               }}
               hidden={step === 1}
               colorScheme="teal"
@@ -215,16 +251,18 @@ export default function SignIn() {
 
           <Spacer />
 
-          <Button
+          {step !== 4 && <Button
             w="7rem"
-            hidden={step === 3}
+            hidden={step === 5}
             onClick={nextButtonLogic}
             colorScheme="teal"
             variant="outline"
           >
             Next
-          </Button>
-          {step === 3 ? (
+          </Button>}
+
+
+          {step === 5 ? (
             <>
               <Button
                 w="7rem"
