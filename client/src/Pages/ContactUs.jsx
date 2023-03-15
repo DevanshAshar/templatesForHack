@@ -19,8 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { GoLocation } from "react-icons/go";
 import { BsPhone } from "react-icons/bs";
+import { ValidateData } from "../Utils/validateData";
 import { HiOutlineMail } from "react-icons/hi";
-import { ValidateData } from "../Utils/ValidateData";
 
 const contactOptions = [
   {
