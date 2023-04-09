@@ -6,31 +6,38 @@ import {
   InputGroup,
   FormHelperText,
   HStack,
-  Select,
   InputLeftAddon,
   FormErrorMessage,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Select } from "chakra-react-select";
+import { groupedCountries } from "../../Assets/Countries";
+import { useChakraSelectProps } from "chakra-react-select";
 
 export default function Form1(props) {
-  const countries = props.countries;
+  const dealingWithPhoneNumberPrefixOnCountryChange = (e) => {
+    const event = {
+      target: {
+        id: "country",
+        value: e.label,
+      },
+    };
+    props.setFormData(event);
+  };
+
+  const selectProps = useChakraSelectProps({
+    onChange: dealingWithPhoneNumberPrefixOnCountryChange,
+  });
 
   useEffect(() => {
-    props.setPhoneNumberPrefix(
-      countries
-        .find((country) => country.name == props.data.country)
-        .phonecode.charAt(0) == "+"
-        ? countries.find((country) => country.name == props.data.country)
-            .phonecode
-        : "+" +
-            countries.find((country) => country.name == props.data.country)
-              .phonecode
-    );
+    for (let continent of groupedCountries) {
+      const result = continent.options.find(
+        (country) => country.label === props.data.country
+      );
+      if (result) props.setPhoneNumberPrefix(result.code);
+    }
   }, [props.data.country]);
-
-  const dealingWithPhoneNumberPrefixOnCountryChange = (e) => {
-    props.setFormData(e);
-  };
 
   return (
     <>
@@ -54,7 +61,7 @@ export default function Form1(props) {
           </FormControl>
         </div>
 
-        <div className="parent">
+        <div className="parent" style={{ paddingLeft: "11%" }}>
           <FormControl>
             <FormLabel htmlFor="lastName">Last name</FormLabel>
             <Input
@@ -75,7 +82,7 @@ export default function Form1(props) {
             value={props.data.email}
             onChange={props.setFormData}
           />
-          {props.errors.email == "" ? (
+          {props.errors.email === "" ? (
             <FormHelperText>We'll never share your email</FormHelperText>
           ) : (
             <FormErrorMessage>{props.errors.email}</FormErrorMessage>
@@ -85,64 +92,80 @@ export default function Form1(props) {
 
       <div className="parent">
         <FormControl mt="3%" isRequired>
-          <FormLabel
-            htmlFor="country"
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Country
-          </FormLabel>
-
+          <FormLabel htmlFor="country">Country</FormLabel>
           <Select
             id="country"
-            variant={"filled"}
-            name="country"
-            autoComplete="country"
-            shadow="sm"
-            size="md"
-            w="full"
-            onChange={dealingWithPhoneNumberPrefixOnCountryChange}
-            value={props.data.country}
-            rounded="md"
-          >
-            <option
-              key={-1}
-              value=""
-              disabled
-              style={{ fontWeight: "bold.600" }}
-            >
-              Select your option
-            </option>
-            {countries.map((country, index) => {
-              return (
-                <option value={country.name} key={index}>
-                  {country.name}
-                </option>
-              );
-            })}
-          </Select>
+            {...selectProps}
+            options={groupedCountries}
+            selectedOptionColorScheme="green"
+            chakraStyles={{
+              dropdownIndicator: (provided) => ({
+                ...provided,
+                w: "40px",
+                bg:'#625D63',
+                _dark:{
+                  bg:'#2D252E'
+                }
+              }),
+              control: (provided, state) => ({
+                ...provided,
+                borderBottomLeftRadius: state.menuIsOpen ? 0 : "md",
+                borderBottomRightRadius: state.menuIsOpen ? 0 : "md",
+                transitionDuration: 5
+              }),
+              group: (provided) => ({
+                ...provided,
+                borderBottomWidth: "2px",
+                borderBottomColor: '#F0EB8D',
+                _last: {
+                  borderBottomWidth: 0
+                }
+              }),
+              groupHeading: (provided) => ({
+                ...provided,
+                bgColor:'#dbe0e0',
+                _dark:{bgColor:'#000000'},
+                fontWeight:'bold',
+                fontSize:'14px',
+                px: "1.4rem",
+                textTransform: "uppercase"
+              }),
+              menu: (provided) => ({
+                ...provided,
+                my: 0,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+                borderWidth: "2px",
+                borderColor:'#2D252E',
+                _dark:{
+                  borderColor:'#625D63'
+                },
+                borderBottomRadius: "md",
+              }),
+              menuList: (provided) => ({
+                ...provided,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+                bgColor:'#dbe0e0',
+                _dark:{bgColor:'#000000'}
+  
+              })
+            }}
+  
+          ></Select>
         </FormControl>
       </div>
 
       <div className="parent">
         <FormControl mt="5%" isRequired isInvalid={props.errors.phoneNumber}>
-          <FormLabel
-            htmlFor="country"
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Phone Number
-          </FormLabel>
+          <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
           <InputGroup>
-            <InputLeftAddon children={props.phoneNumberPrefix} />
+            <InputLeftAddon
+              width={'54px'}
+              children={props.phoneNumberPrefix}
+              bgColor={useColorModeValue("#625D63", "#2D252E")}
+              color={"white"}
+            />
             <Input
               type="number"
               id="phoneNumber"
@@ -150,7 +173,7 @@ export default function Form1(props) {
               onChange={props.setFormData}
             />
           </InputGroup>
-          {props.errors.phoneNumber == "" ? (
+          {props.errors.phoneNumber === "" ? (
             <FormHelperText>We wont spam your phone number</FormHelperText>
           ) : (
             <FormErrorMessage>{props.errors.phoneNumber}</FormErrorMessage>

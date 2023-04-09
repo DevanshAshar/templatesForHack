@@ -8,6 +8,7 @@ import {
   InputGroup,
   Text,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FilePondComponent } from "../FilePondComponent";
 
@@ -35,31 +36,32 @@ export default function Form3(props) {
           </FormLabel>
           <InputGroup size="sm">
             <InputLeftAddon
-              bg="gray.50"
-              _dark={{
-                bg: "gray.800",
-              }}
-              color="gray.500"
               rounded="md"
+              bgColor={useColorModeValue("#625D63", "#2D252E")}
+              color={useColorModeValue("white", "white")}
             >
               http://
             </InputLeftAddon>
             <Input
+              rounded="md"
               value={props.data.socials}
               onChange={props.setFormData}
               id="socials"
-              placeholder="www.linkedin.com"
-              rounded="md"
             />
           </InputGroup>
         </FormControl>
 
-                <Stack>
-                    <Text> Add profile picture</Text>
-                    <FilePondComponent profilePic={props.profilePic} deleteLogic={props.deleteLogic} acceptedFileType={["image/*"]} setLogic={props.setLogic} allowMultiple={false} />
-                </Stack>
-
-            </SimpleGrid>
-        </>
-    );
-};
+        <Stack>
+          <Text> Add profile picture</Text>
+          <FilePondComponent
+            profilePic={props.profilePic}
+            deleteLogic={props.deleteLogic}
+            acceptedFileType={["image/*"]}
+            setLogic={props.setLogic}
+            allowMultiple={false}
+          />
+        </Stack>
+      </SimpleGrid>
+    </>
+  );
+}

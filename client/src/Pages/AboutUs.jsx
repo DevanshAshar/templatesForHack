@@ -1,30 +1,66 @@
-import { Container, Text, VStack, Box, Avatar, Icon, chakra, useColorModeValue, Grid, SimpleGrid, Flex } from '@chakra-ui/react';
-import { FaQuoteRight } from 'react-icons/fa';
+import {
+  Container,
+  Text,
+  VStack,
+  Box,
+  Avatar,
+  Icon,
+  chakra,
+  SimpleGrid,
+  Flex,
+} from "@chakra-ui/react";
+import { FaQuoteRight } from "react-icons/fa";
 
-const testimonials = [{
-  username: 'Ben Parker',
-  position: 'CEO',
-  company: 'Foodtesla',
-  image:
-    'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
-  content: `Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit
+const testimonials = [
+  {
+    username: "Ben Parker",
+    position: "CEO",
+    company: "Foodtesla",
+    image:
+      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80",
+    content: `Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit
       rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam,
-      risus at semper`
-}];
+      risus at semper`,
+  },
+];
 
 export default function AboutUs() {
-
   return (
     <>
-
-      <Flex justify="center" mt={10} mb={10}>
-        <Text fontSize={'lg'}>
-          This website was made by x engineering undergraduates with the vision of ...
+      <VStack
+        justify="center"
+        mt={10}
+        mb={10}
+        textAlign={"center"}
+        lineHeight={"lg"}
+        fontSize={"lg"}
+      >
+        <Text>
+          This website was made by x engineering undergraduates with the vision
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. A veniam
+          beatae excepturi accusantium dicta fugiat! Ipsa, repellat numquam hic
+          illum nulla qui. Numquam aliquam cumque iusto quos exercitationem
+          maxime soluta laboriosam perspiciatis ut impedit ducimus hic, repellat
+          labore blanditiis beatae itaque minus cum provident enim? Aut
+          voluptate aperiam architecto praesentium. of
         </Text>
-      </Flex>
+        <Text>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
+          corporis architecto molestiae dolorum sunt nihil error, facere
+          assumenda voluptas consequatur modi. Quis aliquid eligendi ipsa modi
+          quas iure, vero quisquam fugiat exercitationem ea tempora illum,
+          cupiditate omnis magni recusandae. Optio itaque quas, vitae unde sit
+          perspiciatis debitis maxime voluptas! Lorem ipsum dolor, sit amet
+          consectetur adipisicing elit. Odit, aliquid.
+        </Text>
+        <Text>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
+          corporis architecto molestiae dolorum sunt nihil error, facere
+        </Text>
+      </VStack>
 
-      <Flex justify="center" mt={7} >
-        <chakra.h3 fontSize="3xl" fontWeight="bold" mb={3}>
+      <Flex justify="center" mt={7}>
+        <chakra.h3 fontSize="5xl" fontWeight="bold" mb={3}>
           Testimonials
         </chakra.h3>
       </Flex>
@@ -32,11 +68,11 @@ export default function AboutUs() {
       <SimpleGrid columns={2} minChildWidth="465px">
         {testimonials.map((testimonial, index) => {
           return (
-            <Container maxW="5xl" p={{ base: 5, md: 10 }}>
+            <Container maxW="5xl" p={{ base: 5, md: 10 }} key={index}>
               <VStack
                 spacing={3}
                 p={{ base: 4, sm: 8 }}
-                bg='white'
+                bg="white"
                 _dark={{ bg: "blackAlpha.600" }}
                 borderTop="2px solid"
                 borderColor="green.400"
@@ -64,8 +100,7 @@ export default function AboutUs() {
                 </VStack>
               </VStack>
             </Container>
-
-          )
+          );
         })}
       </SimpleGrid>
     </>

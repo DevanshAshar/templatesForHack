@@ -1,37 +1,34 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Button,
-  Checkbox,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
   Input,
   Link,
-  Stack,
   Image,
-  VStack,
   Text,
-  Container,
   InputGroup,
   InputRightElement,
   useColorModeValue,
   useToast,
+  GridItem,
+  Grid,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function SplitLoginPage() {
   const toast = useToast();
-  localStorage.setItem("executed", false);
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
+
   const navigate = useNavigate();
+
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
-
-  console.log(data);
 
   const dealingWithLoginPageSubmission = async (e) => {
     e.preventDefault();
@@ -44,7 +41,7 @@ export default function SplitLoginPage() {
       body: JSON.stringify(data),
     });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       navigate("/");
       toast({
         title: "Login Successful!",
@@ -75,120 +72,123 @@ export default function SplitLoginPage() {
 
   return (
     <>
-      <Stack
-        minH="92vh"
-        direction={{ base: "column", md: "row" }}
-        paddingBottom="20px"
-      >
-        <Flex flex={2}>
+      <Grid templateColumns="2fr 1fr 1fr" >
+        <GridItem gridColumn="1 / 3" gridRow={1} maxH={"100vh"}>
           <Image
             alt="Cover image"
             objectFit="cover"
-            src="https://bit.ly/2k1H1t6"
+            height="100%"
+            width="100%"
+            src="https://wallpaperaccess.com/full/2484157.jpg"
           />
-        </Flex>
+        </GridItem>
 
-        <Flex p={8} flex={1} align="center" justify="center">
-          <Stack spacing={4}>
-            <Stack align="center">
-              <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-              <Text fontSize={"lg"} color={"gray.600"}>
-                to enjoy all of our cool{" "}
-                <Link href="about" color={"blue.400"}>
-                  features
-                </Link>{" "}
-                😎
-              </Text>
-            </Stack>
+        <GridItem
+          gridColumn="2 / 4"
+          gridRow={1}
+          placeSelf="center"
+          position="relative"
+          rounded="lg"
+          boxShadow="2xl"
+          overflow="hidden"
+          zIndex={100}
+        >
+          <Box
+            bgColor={useColorModeValue("#a0a0a0", "#241f1f")}
+            backdropFilter="blur(15px)"
+            position="absolute"
+            inset="0"
+            zIndex={-1}
+          ></Box>
 
-            <VStack
-              as="form"
-              spacing={8}
-              noValidate
-              boxSize={{ base: "xs", sm: "sm", md: "md" }}
-              h="max-content !important"
-              bg={useColorModeValue("white", "gray.700")}
-              rounded="lg"
-              onSubmit={dealingWithLoginPageSubmission}
-              boxShadow="2xl"
-              p={{ base: 5, sm: 10 }}
-            >
-              <VStack spacing={4} w="113%">
-                <Container w={"100%"}>
-                  <div className="parent">
-                    <FormControl id="email" isRequired>
-                      <FormLabel>Email / Username</FormLabel>
-                      <Input
-                        rounded="md"
-                        onChange={setFormData}
-                        type="email"
-                        value={data.username}
-                      />
-                    </FormControl>
-                  </div>
-                </Container>
-
-                <Container w={"100%"}>
-                  <div className="parent">
-                    <FormControl id="password" isRequired>
-                      <FormLabel>Password</FormLabel>
-                      <InputGroup>
-                        <Input
-                          onChange={setFormData}
-                          type={showPassword ? "text" : "password"}
-                          value={data.password}
-                        />
-                        <InputRightElement h={"full"}>
-                          <Button
-                            variant={"ghost"}
-                            onClick={() =>
-                              setShowPassword((showPassword) => !showPassword)
-                            }
-                          >
-                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
-                  </div>
-                </Container>
-              </VStack>
-              <VStack w="100%">
-                <Stack
-                  direction="row"
-                  justify="space-between"
-                  w="100%"
-                  mb={"10px"}
-                >
-                  <Checkbox colorScheme="green" size="md">
-                    Remember me
-                  </Checkbox>
-                  <Link
-                    as={NavLink}
-                    to="/forgotpassword"
-                    state={{ email: data.email, from: 1 }}
-                    fontSize={{ base: "md", sm: "md" }}
-                  >
-                    Forgot password?
+          <Grid
+            gridAutoRows="auto"
+            gap="1.5rem"
+            as="form"
+            noValidate
+            onSubmit={dealingWithLoginPageSubmission}
+            p={{ base: 3, sm: "2em" }}
+          >
+            <GridItem>
+              <Box textAlign="centepr">
+                <Heading fontSize={"3xl"}>Sign in to your account</Heading>
+                <Text fontSize={"lg"}>
+                  to enjoy all of our cool{" "}
+                  <Link to="/about" as={NavLink} color={"#F0EB8D"}>
+                    features
                   </Link>
-                </Stack>
-                <Button
-                  bg="green.400"
-                  color="white"
-                  _hover={{
-                    bg: "green.600",
-                  }}
+                </Text>
+              </Box>
+            </GridItem>
+
+            <GridItem display="grid" gap="1rem">
+              <FormControl id="email" isRequired className="form-input">
+                <FormLabel>Email/Username</FormLabel>
+                <Input
                   rounded="md"
-                  w="100%"
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-              </VStack>
-            </VStack>
-          </Stack>
-        </Flex>
-      </Stack>
+                  onChange={setFormData}
+                  type="email"
+                  value={data.username}
+                />
+              </FormControl>
+
+              <FormControl id="password" isRequired className="form-input">
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    onChange={setFormData}
+                    type={showPassword ? "text" : "password"}
+                    value={data.password}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+            </GridItem>
+
+            <GridItem display="grid" placeItems="center start" gap="1rem 20px">
+              <Link
+                as={NavLink}
+                to="/signup"
+                fontSize={{ base: "md", sm: "md" }}
+              >
+                Create new account
+              </Link>
+
+              <Link
+                as={NavLink}
+                to="/forgotpassword"
+                state={{ email: data.email, from: 1 }}
+                fontSize={{ base: "md", sm: "md" }}
+              >
+                Forgot password?
+              </Link>
+
+              <Button
+                bg="green.400"
+                color="white"
+                _hover={{
+                  bg: "green.600",
+                }}
+                rounded="md"
+                type="submit"
+                width="100%"
+                gridColumn="span 2"
+              >
+                Sign in
+              </Button>
+            </GridItem>
+          </Grid>
+        </GridItem>
+      </Grid>
     </>
   );
 }

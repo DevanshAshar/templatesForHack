@@ -105,7 +105,7 @@ export default function Form2(props) {
               </Button>
             </InputRightElement>
           </InputGroup>
-          {props.errors.password == "" ? (
+          {props.errors.password === "" ? (
             <FormHelperText>
               Please dont tell your password to anyone!
             </FormHelperText>

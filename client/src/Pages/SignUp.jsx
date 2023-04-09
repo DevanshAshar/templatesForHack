@@ -11,22 +11,16 @@ import {
 import Form3 from "../Components/SigninFormSteps/Form3";
 import Form1 from "../Components/SigninFormSteps/Form1";
 import Form2 from "../Components/SigninFormSteps/Form2";
-import { Country } from "country-state-city";
 import { ValidateData } from "../Utils/validateData";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import Form4 from "../Components/SigninFormSteps/Form4";
-import Form5Employee from "../Components/SigninFormSteps/Form5Employee";
-import Form5Recruiter from "../Components/SigninFormSteps/Form5Recruiter";
 
 export default function SignIn() {
+  let steps = 3;
   const toast = useToast();
-  const countries = useMemo(() => {
-    return Country.getAllCountries();
-  }, []);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(20);
+  const [progress, setProgress] = useState(0);
   const [data, setData] = useState({
     firstName: "",
     username: "",
@@ -34,34 +28,22 @@ export default function SignIn() {
     lastName: "",
     email: "",
     password: "",
-    country: "India",
+    country: "",
     phoneNumber: "",
     socials: "",
-
-    role: "",
-
-    skills: "",
-    yearsOfExperience: 0,
-    highestLevelOfEducation: "",
-    Field: "",
-    City: "",
-    Pincode: "",
-
-    companyName: "",
-    BasedOutOfLocation: "",
-    pincode: ""
-
   });
+
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
+
   const [errors, setErrors] = useState({
     firstName: "",
     username: "",
     lastName: "",
     email: "",
     password: "",
-    country: "India",
+    country: "",
     phoneNumber: "",
   });
   const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("");
@@ -76,10 +58,10 @@ export default function SignIn() {
   };
 
   const setRole = (role) => {
-    setData({ ...data, role: role })
+    setData({ ...data, role: role });
     setStep(step + 1);
-    setProgress(progress + 20);
-  }
+    setProgress(progress + 100 / steps);
+  };
 
   //  for multiple we will use array
   // const setProfilePicLogic = (url) => {
@@ -94,31 +76,27 @@ export default function SignIn() {
   // }
 
   const nextButtonLogic = async () => {
-    if (step == 1) {
-      var err = await ValidateData({
+    let err = { noErrors: true };
+    if (step === 1 && data.country !== "") {
+      err = await ValidateData({
         phoneNumber: data.phoneNumber,
         email: data.email,
         country: data.country,
         phoneNumberPrefix: phoneNumberPrefix,
       });
       setErrors(err);
-      console.log(err);
-    } else if (step == 2) {
-      var err = await ValidateData({
+    } else if (step === 2 && data.password === data.confirmPassword) {
+      err = await ValidateData({
         username: data.username,
         password: data.password,
       });
       setErrors(err);
-    } else {
-      err = { noErrors: true }
     }
 
     if (err.noErrors === true) {
-      console.log('asdasd11')
       setStep(step + 1);
-      setProgress(progress + 20);
+      setProgress(progress + 100 / steps);
     }
-
   };
 
   const dealingWithSignInFormSubmission = async (e) => {
@@ -131,7 +109,7 @@ export default function SignIn() {
       body: JSON.stringify({ ...data, phoneNumberPrefix, profilePic }),
     });
     const responseInJSON = await resp.json();
-    if (resp.status == 200) {
+    if (resp.status === 200) {
       toast({
         status: "success",
         title: "Account created!",
@@ -141,10 +119,10 @@ export default function SignIn() {
       });
       navigate("/login");
     } else {
-      if (responseInJSON.message == "Username is not unique") {
+      if (responseInJSON.message === "Username is not unique") {
         setErrors({ ...errors, username: "This username is taken" });
         setStep(2);
-      } else if (responseInJSON.message == "Email is not unique") {
+      } else if (responseInJSON.message === "Email is not unique") {
         setErrors({
           ...errors,
           email: "An account already exists for this email",
@@ -154,17 +132,10 @@ export default function SignIn() {
     }
   };
 
-
   return (
-    <Flex
-      minH={"92vh"}
-      align={"center"}
-      justify={"center"}
-      alignContent={"space-evenly"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
+    <Flex align={"center"} justify={"center"} alignContent={"space-evenly"}>
       <Box
-        bg={useColorModeValue("white", "gray.700")}
+        bg={useColorModeValue("#a0a0a0", "#241f1f")}
         borderWidth="1px"
         rounded="lg"
         width={{ sm: "sm", md: "md", xl: "xl", lg: "lg" }}
@@ -175,15 +146,17 @@ export default function SignIn() {
         noValidate
         as="form"
       >
-        <Progress
-          colorScheme={"green"}
-          hasStripe
-          value={progress}
-          mb="5%"
-          size={{ sm: "sm", md: "md" }}
-          mx="5%"
-          isAnimated
-        ></Progress>
+        {progress !== 1 && (
+          <Progress
+            colorScheme={"green"}
+            hasStripe
+            value={progress}
+            mb="5%"
+            size={{ sm: "sm", md: "md" }}
+            mx="5%"
+            isAnimated
+          ></Progress>
+        )}
 
         {step === 1 ? (
           <Form1
@@ -191,7 +164,6 @@ export default function SignIn() {
             phoneNumberPrefix={phoneNumberPrefix}
             setPhoneNumberPrefix={setPhoneNumberPrefix}
             setFormData={setFormData}
-            countries={countries}
             data={data}
           />
         ) : step === 2 ? (
@@ -201,7 +173,7 @@ export default function SignIn() {
             setErrors={setErrors}
             data={data}
           />
-        ) : step === 3 ? (
+        ) : (
           <Form3
             profilePic={profilePic}
             setLogic={setProfilePicLogic}
@@ -210,21 +182,7 @@ export default function SignIn() {
             data={data}
             errors={setErrors}
           />
-        ) : step == 4 ? (
-          <Form4 role={data.role} setRole={setRole} />
-        ) :
-          data.role == "Recruiter" ?
-            (
-              <Form5Recruiter setFormData={setFormData}
-                data={data}
-              />
-            ) :
-            (< Form5Employee setFormData={setFormData}
-              data={data}
-            />)
-
-
-        }
+        )}
 
         <Flex w="100%" mt={"20px"}>
           <Tooltip
@@ -237,11 +195,10 @@ export default function SignIn() {
             <Button
               onClick={() => {
                 setStep(step - 1);
-                setProgress(progress - 20);
+                setProgress(progress - 100 / steps);
               }}
               hidden={step === 1}
-              colorScheme="teal"
-              variant="outline"
+              variant="negative"
               w="7rem"
               mr="5%"
             >
@@ -251,30 +208,17 @@ export default function SignIn() {
 
           <Spacer />
 
-          {step !== 4 && <Button
-            w="7rem"
-            hidden={step === 5}
-            onClick={nextButtonLogic}
-            colorScheme="teal"
-            variant="outline"
-          >
-            Next
-          </Button>}
-
-
-          {step === 5 ? (
-            <>
-              <Button
-                w="7rem"
-                colorScheme="green"
-                variant="solid"
-                type="submit"
-                _hover={{ bg: "green.600" }}
-              >
-                Submit
-              </Button>
-            </>
-          ) : null}
+          {step !== steps && (
+            <Button
+              w="7rem"
+              hidden={step === 5}
+              onClick={nextButtonLogic}
+              colorScheme="teal"
+              variant="submit"
+            >
+              Next
+            </Button>
+          )}
         </Flex>
       </Box>
     </Flex>

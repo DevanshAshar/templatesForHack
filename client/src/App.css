@@ -1,9 +1,4 @@
-* {
-  font-family: "Quicksand", sans-serif;
-}
-
-main {
-  min-height: 100vh;
+.main{
   display: flex;
   flex-direction: column;
 }
@@ -18,8 +13,10 @@ footer {
 
 nav a.active {
   font-weight: bold;
+  color: #F0EB8D;
 }
 
 .parent:focus-within:focus-within label {
   font-weight: bold;
 }
+

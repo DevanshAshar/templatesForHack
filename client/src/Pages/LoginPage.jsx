@@ -31,8 +31,7 @@ export default function LoginPage() {
 
   const dealingWithLoginSubmit = (e) => {
     e.preventDefault()
-
-
+    
   }
 
   return (
@@ -48,7 +47,7 @@ export default function LoginPage() {
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
             <Text fontSize={'lg'} color={'gray.600'}>
-              to enjoy all of our cool <Link href='about' color={'blue.400'}>features</Link> 😎
+              to enjoy all of our cool <Link to='http://localhost:3000/about' as={NavLink} color={'blue.400'}>features</Link> 😎
             </Text>
           </Stack>
 
