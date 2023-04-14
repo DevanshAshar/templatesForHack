@@ -114,7 +114,7 @@ export default function SplitLoginPage() {
                 <Heading fontSize={"3xl"}>Sign in to your account</Heading>
                 <Text fontSize={"lg"}>
                   to enjoy all of our cool{" "}
-                  <Link to="/about" as={NavLink} color={"#F0EB8D"}>
+                  <Link to="/about" as={NavLink} color={useColorModeValue('#e5dc36','#F0EB8D')}>
                     features
                   </Link>
                 </Text>

@@ -24,26 +24,6 @@ import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import useAuth from "../Hooks/useAuth";
 import { NavLink, useLocation } from "react-router-dom";
 
-const Nav = ({ children }) => (
-  <Text
-    px={2}
-    rounded={"md"}
-    py={1}
-    fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
-    cursor={"pointer"}
-  >
-    <Link
-      to={routing(children)}
-      spy={true}
-      smooth={true}
-      offset={-30}
-      duration={600}
-    >
-      {children}
-    </Link>
-  </Text>
-);
-
 const routing = (children) => {
   if (children === "About us") {
     return "about";
@@ -59,6 +39,45 @@ const routing = (children) => {
 };
 
 export default function Navbar() {
+  const Nav = ({ children }) => {
+    if (location.pathname !== "/") {
+      console.log("ghfgh")
+      return (
+        <Text
+          px={2}
+          rounded={"md"}
+          py={1}
+          fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
+          cursor={"pointer"}
+        >
+          <NormalLink to={routing(children)} variant={"navbar"} as={NavLink}>
+            {children}
+          </NormalLink>
+        </Text>
+      );
+    } else {
+      return (
+        <Text
+          px={2}
+          rounded={"md"}
+          py={1}
+          fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
+          cursor={"pointer"}
+        >
+          <Link
+            to={routing(children)}
+            spy={true}
+            smooth={true}
+            offset={-30}
+            duration={600}
+          >
+            {children}
+          </Link>
+        </Text>
+      );
+    }
+  };
+
   const location = useLocation();
   const { auth, setAuth } = useAuth();
 
@@ -68,9 +87,12 @@ export default function Navbar() {
   };
 
   var Links = [];
-  if (checkingForNullObjectForAuthObject()) {
+  if(location.pathname==="/"){
     Links = ["About us", "FAQ", "Contact us"];
+  }else if (checkingForNullObjectForAuthObject()) {
+    Links =["About us"]
   } else {
+
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -105,7 +127,7 @@ export default function Navbar() {
                 <Image src="/logo.png" height="4rem" margin="1rem 0" />
               </Link>
             ) : (
-              <NormalLink to="/" as={NavLink} offset={-64} >
+              <NormalLink to="/" as={NavLink}>
                 <Image src="/logo.png" height="4rem" margin="1rem 0" />
               </NormalLink>
             )}

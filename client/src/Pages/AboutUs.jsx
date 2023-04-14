@@ -6,10 +6,37 @@ import {
   Avatar,
   Icon,
   chakra,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  useColorModeValue,
   SimpleGrid,
   Flex,
 } from "@chakra-ui/react";
 import { FaQuoteRight } from "react-icons/fa";
+
+const statData = [
+  {
+    id: 1,
+    label: "Registered plus users",
+    number: "1,730",
+    increaseInNumber: "20.35%",
+  },
+  {
+    id: 2,
+    label: "Prediction accuracy",
+    number: "98.5%",
+    increaseInNumber: "10.25%",
+  },
+  {
+    id: 3,
+    label: "Listings created",
+    number: "11",
+    increaseInNumber: "20.35%",
+  },
+];
 
 const testimonials = [
   {
@@ -28,11 +55,10 @@ export default function AboutUs() {
   return (
     <>
       <VStack
-        justify="center"
-        mt={10}
+        mt={"3.2rem"}
         mb={10}
         textAlign={"center"}
-        lineHeight={"lg"}
+        lineHeight={"30px"}
         fontSize={"lg"}
       >
         <Text>
@@ -59,8 +85,45 @@ export default function AboutUs() {
         </Text>
       </VStack>
 
-      <Flex justify="center" mt={7}>
-        <chakra.h3 fontSize="5xl" fontWeight="bold" mb={3}>
+      <VStack textAlign={"center"} mb={20}>
+        <Text
+          mt={"3.2rem"}
+          lineHeight={"20px"}
+          fontWeight={"bold"}
+          textDecoration={`{useColorModeValue('#F0EB8D','#e5dc36')} wavy underline`}
+          fontSize={"3xl"}
+        >
+          Trusted by the community
+        </Text>
+        <Text mb={10} paddingLeft={"20rem"} fontSize={"lg"} color={useColorModeValue('#666666','#B2B2B2')}>
+          and for the right reasons✨
+        </Text>
+
+        <Container maxW="5xl">
+          <SimpleGrid
+            columns={{ base: 1, sm: 2, md: 3 }}
+            spacing={"7%"}
+            mt={12}
+            mb={4}
+          >
+            {statData.map((data) => (
+              <Box key={data.id} boxShadow="#F0EB8D 0px 2px 8px 0px" _dark={{boxShadow:'#e5dc36 0px 2px 8px 6px'}} py={5} rounded="md" borderWidth={2}>
+                <Stat>
+                  <StatLabel>{data.label}</StatLabel>
+                  <StatNumber>{data.number}</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="increase" />
+                    {data.increaseInNumber}
+                  </StatHelpText>
+                </Stat>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Container>
+      </VStack>
+
+      <Flex justify="center" mt={9}>
+        <chakra.h3 fontSize="5xl" fontWeight="bold" mb={2.8}>
           Testimonials
         </chakra.h3>
       </Flex>
@@ -72,28 +135,27 @@ export default function AboutUs() {
               <VStack
                 spacing={3}
                 p={{ base: 4, sm: 8 }}
-                bg="white"
-                _dark={{ bg: "blackAlpha.600" }}
+                bg="#8D858E"
+                _dark={{ bg: "#625D63" }}
                 borderTop="2px solid"
-                borderColor="green.400"
+                borderColor="#008000"
                 borderBottomLeftRadius="lg"
                 borderBottomRightRadius="lg"
                 maxW="25rem"
+                color="black"
                 margin="0 auto"
                 boxShadow="lg"
                 key={index}
               >
-                <Icon as={FaQuoteRight} w={8} h={8} color="green.400" />
-                <Text p={5} color="gray.500">
-                  {testimonial.content}
-                </Text>
+                <Icon as={FaQuoteRight} w={8} h={8} color="#008000" />
+                <Text p={5}>{testimonial.content}</Text>
                 <VStack alignItems="center">
                   <Avatar name="avatar" src={testimonial.image} size="lg" />
                   <Box textAlign="center">
-                    <Text fontWeight="bold" fontSize="lg">
+                    <Text fontWeight="bold" fontSize="xl">
                       {testimonial.username}
                     </Text>
-                    <Text fontSize="md" color="gray.500">
+                    <Text fontSize="md">
                       {testimonial.position} at {testimonial.company}
                     </Text>
                   </Box>

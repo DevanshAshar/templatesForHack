@@ -48,13 +48,25 @@ const theme = extendTheme({
       variants: {
         navbar: {
           _hover: {
-            color: "#F0EB8D",
+            color: "#e5dc36",
             textDecoration: "none",
             fontWeight: "bold",
           },
           _activeLink: {
-            color: "#F0EB8D",
+            color: "#e5dc36",
+            fontWeight:'bold'
           },
+          _dark:{
+            _hover: {
+              color: "#F0EB8D",
+              textDecoration: "none",
+              fontWeight: "bold",
+            },
+            _activeLink: {
+              color: "#F0EB8D",
+              fontWeight:'bold'
+            },  
+          }
         },
       },
     },

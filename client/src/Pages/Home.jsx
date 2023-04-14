@@ -8,12 +8,17 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-scroll";
 import { NavLink } from "react-router-dom";
+import HeroAbout from "./HomeSections/HeroAbout"
+import HomeAbout from "./HomeSections/HomeAbout";
+import HomeFAQ1 from "./HomeSections/HomeFAQ1";
+import HomeFAQ2 from "./HomeSections/HomeFAQ2";
+import HomeContact from "./HomeSections/HomeContact";
 
 export default function Home() {
   return (
     <>
       <Box as="section" height={"500px"} id="hero">
-        a
+        <HeroAbout />
       </Box>
 
       <Box
@@ -21,7 +26,9 @@ export default function Home() {
         id="about"
         height={"600px"}
         bg={useColorModeValue("#a0a0a0", "#241f1f")}
-      ></Box>
+      >
+        <HomeAbout />
+      </Box>
 
       <Box
         as="section"
@@ -29,13 +36,15 @@ export default function Home() {
         height={"1000px"}
         bg={useColorModeValue("#6c873c", "#1d2410")}
       >
-        <Box height={"500px"}>c</Box>
+        <Box height={"500px"}>
+          <HomeFAQ1 />
+          </Box>
         <Box
           as="section"
           height={"500px"}
           bg={useColorModeValue("#a0a0a0", "#241f1f")}
         >
-          d
+          <HomeFAQ2 />
         </Box>
       </Box>
 
@@ -45,7 +54,7 @@ export default function Home() {
         height={"500px"}
         bg={useColorModeValue("#6c873c", "#1d2410")}
       >
-        e
+        <HomeContact />
       </Box>
 
       <Grid
