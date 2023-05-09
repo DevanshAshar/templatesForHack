@@ -5,7 +5,7 @@ const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: mode("#dbe0e0", "#000000")(props),
+        bg: mode("#FFFFFF", "#000000")(props),
         fontFamily: `Quicksand, sans-serif;`,
       },
     }),
@@ -13,6 +13,21 @@ const theme = extendTheme({
   config: {
     initialColorMode: "dark",
     useSystemColorMode: true,
+  },
+  colors: {
+    bg: {
+      dark: "#000000",
+      light: "#FFFFFF",
+    },
+    primary: {
+      dark: "#241f1f",
+      light: "#a0a0a0",
+    },
+    secondary: {
+      dark: "#1d2410",
+      light: "#6c873c",
+    },
+    highlight: "#e5dc36",
   },
   components: {
     Button: {
@@ -42,34 +57,54 @@ const theme = extendTheme({
           },
         },
       },
+      defaultProps: {
+        variant: "default",
+      },
     },
 
     Link: {
       variants: {
         navbar: {
           _hover: {
+            // color:"#F0EB8D",
             color: "#e5dc36",
+            fontWeight: "bolder",
             textDecoration: "none",
-            fontWeight: "bold",
           },
-          _activeLink: {
+          _active: {
+            // color:"#F0EB8D",
             color: "#e5dc36",
-            fontWeight:'bold'
+            fontWeight: "bolder",
+            textDecoration: "none",
           },
-          _dark:{
+          _dark: {
             _hover: {
-              color: "#F0EB8D",
+              color: "#e5dc36",
+              fontWeight: "bold",
               textDecoration: "none",
+            },
+            _active: {
+              color: "#e5dc36",
+              fontWeight: "bolder",
+              textDecoration: "none",
+            },
+          },
+        },
+        normalLinkWithUnderline: {
+          textDecoration: "underline",
+          color: mode("#e5dc36", "#F0EB8D"),
+          _hover: {
+            fontWeight: "bolder",
+          },
+          _dark: {
+            _hover: {
               fontWeight: "bold",
             },
-            _activeLink: {
-              color: "#F0EB8D",
-              fontWeight:'bold'
-            },  
-          }
+          },
         },
       },
     },
+
     Input: {
       baseStyle: {
         field: {

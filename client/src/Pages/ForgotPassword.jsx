@@ -38,7 +38,7 @@ export default function ForgotPassword() {
                     <Stack spacing={4} maxW={{ sm: '30rem', md: "32rem", lg: "35rem" }} margin="0 auto">
 
                         <Stack align="center" spacing={4} mb='1%'>
-                            <Heading fontSize={{ sm: '3xl', lg: '4xl' }}>{step == 3 ? "Enter new password" : step == 1 ? "Verify your email address" : "We have sent the code to email"}</Heading>
+                            <Heading fontSize={{ sm: '3xl', lg: '4xl' }}>{step === 3 ? "Enter new password" : step === 1 ? "Verify your email address" : "We have sent the code to email"}</Heading>
                             <Text fontSize={{ sm: 'md', md: 'lg', lg: 'xl' }} color='red'>{(step > 1) && "Do NOT refresh "}</Text>
                         </Stack>
 
@@ -63,9 +63,9 @@ export default function ForgotPassword() {
                                 rounded="lg"
                                 boxShadow="lg"
                             >
-                                {step == 1 ?
+                                {step === 1 ?
                                     <Form1 setStep={setStep} setFormData={setFormData} data={data} /> :
-                                    step == 2 ?
+                                    step === 2 ?
                                         <Form2 setStep={setStep} setFormData={setFormData}  setData={setData} data={data} /> :
                                         <Form3 setStep={setStep} setFormData={setFormData} data={data}/>
                                 }

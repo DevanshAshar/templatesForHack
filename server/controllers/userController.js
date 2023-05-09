@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer')
 
 const getAuth = async (req, res) => {
     try {
-        console.log('sss')
+        console.log(req.user)
         res.send(req.user)
     } catch (err) {
         console.log(err)
@@ -18,11 +18,9 @@ const getAuth = async (req, res) => {
 
 const newUser = async (req, res) => {
     try {
-        console.log(req.body)
         const { username, password, email, country, socials, phoneNumber,role, firstName, lastName, profilePic, phoneNumberPrefix } = req.body
         var name = firstName + " " + lastName
         var phone = phoneNumberPrefix + " " + phoneNumber
-        console.log(role)
 
         const userExist = await User.findOne({ username: username })
         const emailExist = await User.findOne({ email: email })
@@ -50,16 +48,20 @@ const loginUser = async (req, res) => {
 
         const userToBeChecked = await User.findOne({ email: email })
         if (userToBeChecked) {
+            console.log('a123123')
             const passwordMatchOrNot = await bcrypt.compare(password, userToBeChecked.password)
+            console.log('a123123')
+
             if (passwordMatchOrNot) {
                 const token = await userToBeChecked.generateAuthToken();
+                console.log(token)
                 res.cookie("jsonwebtoken", token, {
                     maxAge: 86400000,
                     httpOnly: true,
                     sameSite: "none",
                     secure: true,
                 })
-                return res.status(200).json({ message: "Login successful" })
+                return res.status(200).json({ message: "Login successful",user:userToBeChecked })
             } else {
                 return res.status(400).json({ message: "password did not match" })
             }
@@ -75,7 +77,7 @@ const loginUser = async (req, res) => {
                         sameSite: "none",
                         secure: true
                     })
-                    return res.status(200).json({ message: "Login successful" })
+                    return res.status(200).json({ message: "Login successful", user: emailToBeChecked })
                 } else {
                     return res.status(400).json({ message: "password did not match" })
                 }

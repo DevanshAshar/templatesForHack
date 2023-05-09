@@ -18,8 +18,11 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 
 export default function SplitLoginPage() {
+  const { setAuth } = useAuth();
+
   const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
@@ -32,7 +35,7 @@ export default function SplitLoginPage() {
 
   const dealingWithLoginPageSubmission = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/user/loginUser", {
+    const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/loginUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,16 +43,18 @@ export default function SplitLoginPage() {
       credentials: "include",
       body: JSON.stringify(data),
     });
+    const responseInJSON = await response.json();
 
     if (response.status === 200) {
-      navigate("/");
-      toast({
-        title: "Login Successful!",
-        status: "success",
-        isClosable: true,
-        autoClose: 300,
-        position: "bottom-right",
-      });
+      setAuth(responseInJSON.user)
+       toast({
+         title: "Login Successful!",
+         status: "success",
+         isClosable: true,
+         autoClose: 300,
+         position: "bottom-right",
+       });
+      navigate("/landing")
     } else if (data.email === "" || data.password === "") {
       toast({
         title: "Field(s) cannot be empty!",
@@ -72,7 +77,7 @@ export default function SplitLoginPage() {
 
   return (
     <>
-      <Grid templateColumns="2fr 1fr 1fr" >
+      <Grid templateColumns="2fr 1fr 1fr">
         <GridItem gridColumn="1 / 3" gridRow={1} maxH={"100vh"}>
           <Image
             alt="Cover image"
@@ -93,8 +98,9 @@ export default function SplitLoginPage() {
           overflow="hidden"
           zIndex={100}
         >
+          {/* try to use transperent box below here*/}
           <Box
-            bgColor={useColorModeValue("#a0a0a0", "#241f1f")}
+            bgColor={useColorModeValue('primary.light','primary.dark')}
             backdropFilter="blur(15px)"
             position="absolute"
             inset="0"
@@ -112,9 +118,13 @@ export default function SplitLoginPage() {
             <GridItem>
               <Box textAlign="centepr">
                 <Heading fontSize={"3xl"}>Sign in to your account</Heading>
-                <Text fontSize={"lg"}>
+                <Text fontSize={"lg"} >
                   to enjoy all of our cool{" "}
-                  <Link to="/about" as={NavLink} color={useColorModeValue('#e5dc36','#F0EB8D')}>
+                  <Link
+                    to="/about"
+                    as={NavLink}
+                    variant={'normalLinkWithUnderline'}
+                  >
                     features
                   </Link>
                 </Text>
@@ -122,23 +132,25 @@ export default function SplitLoginPage() {
             </GridItem>
 
             <GridItem display="grid" gap="1rem">
-              <FormControl id="email" isRequired className="form-input">
+              <FormControl  isRequired className="form-input">
                 <FormLabel>Email/Username</FormLabel>
                 <Input
                   rounded="md"
+                  id="email"
                   onChange={setFormData}
                   type="email"
                   value={data.username}
                 />
               </FormControl>
 
-              <FormControl id="password" isRequired className="form-input">
+              <FormControl isRequired className="form-input">
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
                   <Input
                     onChange={setFormData}
                     type={showPassword ? "text" : "password"}
                     value={data.password}
+                    id="password"
                   />
                   <InputRightElement h={"full"}>
                     <Button

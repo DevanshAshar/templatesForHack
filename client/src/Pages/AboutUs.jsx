@@ -16,25 +16,32 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FaQuoteRight } from "react-icons/fa";
+import NumbersAnimation from "../Components/NumbersAnimation";
 
 const statData = [
   {
     id: 1,
     label: "Registered plus users",
-    number: "1,730",
-    increaseInNumber: "20.35%",
+    number: "1730",
+    suffixForNumber: "",
+    decimal: 0,
+    increaseInNumber: "20.25",
   },
   {
     id: 2,
     label: "Prediction accuracy",
-    number: "98.5%",
-    increaseInNumber: "10.25%",
+    number: "98.5",
+    decimal: 2,
+    suffixForNumber: "%",
+    increaseInNumber: "10.25",
   },
   {
     id: 3,
     label: "Listings created",
     number: "11",
-    increaseInNumber: "20.35%",
+    decimal: 0,
+    suffixForNumber: "",
+    increaseInNumber: "40.35",
   },
 ];
 
@@ -91,11 +98,16 @@ export default function AboutUs() {
           lineHeight={"20px"}
           fontWeight={"bold"}
           textDecoration={`{useColorModeValue('#F0EB8D','#e5dc36')} wavy underline`}
-          fontSize={"3xl"}
+          fontSize={"4xl"}
         >
           Trusted by the community
         </Text>
-        <Text mb={10} paddingLeft={"20rem"} fontSize={"lg"} color={useColorModeValue('#666666','#B2B2B2')}>
+        <Text
+          mb={10}
+          paddingLeft={"20rem"}
+          fontSize={"lg"}
+          color={useColorModeValue("#666666", "#B2B2B2")}
+        >
           and for the right reasons✨
         </Text>
 
@@ -107,13 +119,27 @@ export default function AboutUs() {
             mb={4}
           >
             {statData.map((data) => (
-              <Box key={data.id} boxShadow="#F0EB8D 0px 2px 8px 0px" _dark={{boxShadow:'#e5dc36 0px 2px 8px 6px'}} py={5} rounded="md" borderWidth={2}>
+              <Box
+                key={data.id}
+                boxShadow="#F0EB8D 0px 2px 8px 0px"
+                _dark={{ boxShadow: "#e5dc36 0px 2px 8px 6px" }}
+                py={5}
+                rounded="md"
+                borderWidth={2}
+              >
                 <Stat>
-                  <StatLabel>{data.label}</StatLabel>
-                  <StatNumber>{data.number}</StatNumber>
+                  <StatLabel fontSize={"xl"}>{data.label}</StatLabel>
+                  <NumbersAnimation
+                    Component={StatNumber}
+                    end={data.number}
+                    suffix={data.suffixForNumber}
+                    decimal={data.decimal}
+                  >
+                    {data.number}
+                  </NumbersAnimation>
                   <StatHelpText>
                     <StatArrow type="increase" />
-                    {data.increaseInNumber}
+                    {data.increaseInNumber + "%"}
                   </StatHelpText>
                 </Stat>
               </Box>

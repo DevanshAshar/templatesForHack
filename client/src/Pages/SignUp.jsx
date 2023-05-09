@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Progress,
   Box,
@@ -33,6 +33,8 @@ export default function SignIn() {
     socials: "",
   });
 
+  console.log(step)
+
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
@@ -57,11 +59,6 @@ export default function SignIn() {
     setProfilePic("");
   };
 
-  const setRole = (role) => {
-    setData({ ...data, role: role });
-    setStep(step + 1);
-    setProgress(progress + 100 / steps);
-  };
 
   //  for multiple we will use array
   // const setProfilePicLogic = (url) => {
@@ -92,7 +89,6 @@ export default function SignIn() {
       });
       setErrors(err);
     }
-
     if (err.noErrors === true) {
       setStep(step + 1);
       setProgress(progress + 100 / steps);
@@ -101,7 +97,7 @@ export default function SignIn() {
 
   const dealingWithSignInFormSubmission = async (e) => {
     e.preventDefault();
-    const resp = await fetch("http://localhost:5000/user/newUser", {
+    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/newUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -217,6 +213,18 @@ export default function SignIn() {
               variant="submit"
             >
               Next
+            </Button>
+          )}
+
+          {step === steps && (
+            <Button
+              w="7rem"
+              hidden={step === 5}
+              onClick={dealingWithSignInFormSubmission}
+              colorScheme="teal"
+              variant="submit"
+            >
+              Submit
             </Button>
           )}
         </Flex>

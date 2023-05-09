@@ -54,7 +54,7 @@ export default function ContactUs() {
     var err = ValidateData(data);
     setErrors(err);
 
-    if (err.noErrors == true) {
+    if (err.noErrors === true) {
       console.log("yooo");
 
       // const resp= await fetch("/contactData",{
@@ -160,7 +160,7 @@ export default function ContactUs() {
                   rounded="md"
                   onChange={setFormData}
                 />
-                {errors.email == "" ? (
+                {errors.email === "" ? (
                   <FormHelperText>
                     We promise to not spam your inbox!
                   </FormHelperText>
@@ -183,7 +183,7 @@ export default function ContactUs() {
                 placeholder="Are you available for freelance work?"
                 rounded="md"
               />
-              {errors.subject == "" && (
+              {errors.subject === "" && (
                 <FormErrorMessage>{errors.subject}</FormErrorMessage>
               )}
             </FormControl>

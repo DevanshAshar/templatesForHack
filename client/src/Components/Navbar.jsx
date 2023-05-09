@@ -18,11 +18,12 @@ import {
   VStack,
   Link as NormalLink,
   Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Link } from "react-scroll";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import useAuth from "../Hooks/useAuth";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const routing = (children) => {
   if (children === "About us") {
@@ -41,7 +42,6 @@ const routing = (children) => {
 export default function Navbar() {
   const Nav = ({ children }) => {
     if (location.pathname !== "/") {
-      console.log("ghfgh")
       return (
         <Text
           px={2}
@@ -50,7 +50,7 @@ export default function Navbar() {
           fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
           cursor={"pointer"}
         >
-          <NormalLink to={routing(children)} variant={"navbar"} as={NavLink}>
+          <NormalLink to={routing(children)} as={NavLink} variant={"navbar"}>
             {children}
           </NormalLink>
         </Text>
@@ -77,34 +77,36 @@ export default function Navbar() {
       );
     }
   };
-
+  const navigate = useNavigate();
   const location = useLocation();
   const { auth, setAuth } = useAuth();
-
   const checkingForNullObjectForAuthObject = () => {
     //returns true when the auth is {} that is not logged in or else it returns false
     return Object.keys(auth).length === 0;
   };
 
   var Links = [];
-  if(location.pathname==="/"){
+  if (location.pathname === "/") {
     Links = ["About us", "FAQ", "Contact us"];
-  }else if (checkingForNullObjectForAuthObject()) {
-    Links =["About us"]
+  } else if (checkingForNullObjectForAuthObject()) {
+    Links = ["About us"];
   } else {
-
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const dealingWithLogout = async () => {
-    const res = await fetch("http://localhost:5000/user/logout", {
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}user/logout`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
     if (res.status === 200) {
       setAuth({});
+      navigate("/");
     }
   };
 
@@ -114,6 +116,7 @@ export default function Navbar() {
         px={4}
         position="sticky"
         top="0"
+        zIndex={1000}
         css={{ backdropFilter: "blur(5px)" }}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
@@ -127,7 +130,7 @@ export default function Navbar() {
                 <Image src="/logo.png" height="4rem" margin="1rem 0" />
               </Link>
             ) : (
-              <NormalLink to="/" as={NavLink}>
+              <NormalLink to="/" as={NavLink} variant={"navbar"}>
                 <Image src="/logo.png" height="4rem" margin="1rem 0" />
               </NormalLink>
             )}
@@ -136,52 +139,65 @@ export default function Navbar() {
 
           <IconButton
             size={"md"}
-            variant={"default"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
 
-          <HStack spacing={8} alignItems={"center"}>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              {Links.map((link) => (
-                <Nav key={link}>{link}</Nav>
-              ))}
-              {checkingForNullObjectForAuthObject() && (
-                <>
-                  <NormalLink
-                    px={2}
-                    as={NavLink}
-                    rounded={"md"}
-                    py={1}
-                    _hover={{ textDecoration: "none" }}
-                    fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
-                    to="login"
-                  >
-                    Sign In
-                  </NormalLink>
-                  <NormalLink
-                    px={2}
-                    as={NavLink}
-                    rounded={"md"}
-                    py={1}
-                    _hover={{ textDecoration: "none" }}
-                    fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
-                    to="signup"
-                  >
-                    Sign Up
-                  </NormalLink>
-                </>
-              )}
-            </HStack>
-            <Button onClick={toggleColorMode} variant={"default"}>
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
+          <HStack
+            alignItems={"center"}
+            as={"nav"}
+            spacing={4}
+            display={{ base: "none", md: "flex" }}
+          >
+            {Links.map((link) => (
+              <Nav key={link}>{link}</Nav>
+            ))}
+            {checkingForNullObjectForAuthObject() && (
+              <>
+                <NormalLink
+                  px={2}
+                  as={NavLink}
+                  rounded={"md"}
+                  py={1}
+                  _hover={{ textDecoration: "none" }}
+                  fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
+                  to="login"
+                >
+                  Sign In
+                </NormalLink>
+                <NormalLink
+                  px={2}
+                  as={NavLink}
+                  rounded={"md"}
+                  py={1}
+                  _hover={{ textDecoration: "none" }}
+                  fontSize={{ md: "md", lg: "lg", xl: "2xl" }}
+                  to="signup"
+                >
+                  Sign Up
+                </NormalLink>
+              </>
+            )}
+            <IconButton
+              _hover={{ backgroundColor: `${useColorModeValue('primary.light','primary.dark')}`}}
+              icon={
+                colorMode === "light" ? (
+                  <MoonIcon
+                    color={"#C0C0C0"}
+                    filter={"drop-shadow(0px 11px 5px #C0C0C0)"}
+                  />
+                ) : (
+                  <SunIcon
+                    color={"#FFE57C"}
+                    filter={"drop-shadow(0px 10px 7px #FFE87C)"}
+                  />
+                )
+              }
+              onClick={toggleColorMode}
+              variant="ghost"
+            />
           </HStack>
 
           {auth.username && (

@@ -26,7 +26,7 @@ export default function Form2(props) {
             },
             body: JSON.stringify({ otp, email })
         })
-        if (resp.status == 200) {
+        if (resp.status === 200) {
             props.setStep(3)
         } else {
         }
@@ -43,7 +43,7 @@ export default function Form2(props) {
             body: JSON.stringify({ email })
         })
 
-        if (resp.status == 200) {
+        if (resp.status === 200) {
             props.setStep(2)
         } else {
 

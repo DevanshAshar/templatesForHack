@@ -66,7 +66,7 @@ export default function LoginPage() {
             <VStack spacing={4} w="113%">
 
               <Container w={'100%'}>
-                <div className="parent">
+                <div classname="parent">
                   <FormControl id="email" isRequired>
                     <FormLabel>Email / Username</FormLabel>
                     <Input rounded="md" type="email" value={data.username} onChange={setFormData} />

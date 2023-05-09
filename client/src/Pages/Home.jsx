@@ -8,24 +8,53 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-scroll";
 import { NavLink } from "react-router-dom";
-import HeroAbout from "./HomeSections/HeroAbout"
+import HeroAbout from "./HomeSections/HeroAbout";
 import HomeAbout from "./HomeSections/HomeAbout";
 import HomeFAQ1 from "./HomeSections/HomeFAQ1";
 import HomeFAQ2 from "./HomeSections/HomeFAQ2";
 import HomeContact from "./HomeSections/HomeContact";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import { SocialIcon } from 'react-social-icons';
 
 export default function Home() {
+  const contributers = [
+    {
+      name: "Aman Nambisan",
+      linkedInLink: "https://www.linkedin.com/in/amannambisan/",
+    },
+    {
+      name: "Aman Nambisan",
+      linkedInLink: "https://www.linkedin.com/in/amannambisan/",
+    },
+    {
+      name: "Aman Nambisan",
+      linkedInLink: "https://www.linkedin.com/in/amannambisan/",
+    },
+    {
+      name: "Aman Nambisan",
+      linkedInLink: "https://www.linkedin.com/in/amannambisan/",
+    },
+  ];
+
   return (
     <>
-      <Box as="section" height={"500px"} id="hero">
+      <Box
+        as="section"
+        height={"500px"}
+        id="hero"
+        bgGradient={`linear(${useColorModeValue(
+          "bg.light",
+          "bg.dark"
+        )} 0%, ${useColorModeValue("primary.light", "primary.dark")} 100%)`}
+      >
         <HeroAbout />
       </Box>
 
       <Box
         as="section"
         id="about"
-        height={"600px"}
-        bg={useColorModeValue("#a0a0a0", "#241f1f")}
+        height={"500px"}
+        bg={useColorModeValue("primary.light", "primary.dark")}
       >
         <HomeAbout />
       </Box>
@@ -34,15 +63,15 @@ export default function Home() {
         as="section"
         id="faq"
         height={"1000px"}
-        bg={useColorModeValue("#6c873c", "#1d2410")}
+        bg={useColorModeValue("secondary.light", "secondary.dark")}
       >
         <Box height={"500px"}>
           <HomeFAQ1 />
-          </Box>
+        </Box>
         <Box
           as="section"
           height={"500px"}
-          bg={useColorModeValue("#a0a0a0", "#241f1f")}
+          bg={useColorModeValue("primary.light", "primary.dark")}
         >
           <HomeFAQ2 />
         </Box>
@@ -52,30 +81,33 @@ export default function Home() {
         as="section"
         id="contact"
         height={"500px"}
-        bg={useColorModeValue("#6c873c", "#1d2410")}
+        bg={useColorModeValue("secondary.light", "secondary.dark")}
       >
         <HomeContact />
       </Box>
 
-      <Grid
-        bg={useColorModeValue("#dbe0e0", "#000000")}
-        padding="2rem"
-        templateColumns="repeat(3,1fr)"
-        placeItems="center"
-      >
-        <Box>
-          <Text fontWeight="bold">Made by,</Text>
-          <Grid>
-            <Text>Aman Nambisan</Text>
-            <Text>Devansh Ashar</Text>
-            <Text>Hemant Singh</Text>
-            <Text>Varun Vishwanath</Text>
-          </Grid>
-        </Box>
+      <Grid padding="2rem" templateColumns="repeat(3,1fr)" placeItems="center">
 
-        <Box>
-          <Text fontWeight="bold">Links</Text>
-          <Grid color="#af99ff">
+        <Grid>
+          <Text fontWeight="bold" fontSize={"lg"}>
+            Made by <SocialIcon network="linkedin" style={{height:'23px',width:'23px'}}/>
+          </Text>
+          {contributers.map((contributer) => (
+            <ChakraLink
+              variant={"normalLinkWithUnderline"}
+              href="https://www.linkedin.com/in/amannambisan/"
+              target="_blank"
+            >
+              {contributer.name}
+            </ChakraLink>
+          ))}
+        </Grid>
+
+        <Grid>
+          <Text fontWeight="bold" fontSize={"lg"}>
+            Links
+          </Text>
+          <Box color={useColorModeValue("$8D858E", "#413543")}>
             <Text cursor={"pointer"}>
               <Link
                 to="hero"
@@ -105,19 +137,20 @@ export default function Home() {
                 Login
               </NormalLink>
             </Text>
-          </Grid>
-        </Box>
+          </Box>
+        </Grid>
 
-        <Box>
+        <Grid>
           <Text cursor={"pointer"}>
             <Link to="hero">
               <Image src="/logo.png" height="8rem" />
             </Link>
           </Text>
-          <Text as="h3" fontWeight="bold">
+          <Text fontSize={"lg"} fontWeight="bold">
             JobSeeker &copy; {new Date().getFullYear()}
           </Text>
-        </Box>
+        </Grid>
+
       </Grid>
     </>
   );

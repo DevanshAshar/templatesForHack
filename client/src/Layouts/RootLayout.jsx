@@ -1,12 +1,15 @@
 import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import AuthContext from "../Contexts/AuthProvider";
+import useAuth from "../Hooks/useAuth";
+import LoadingAuthContext from "../Contexts/AuthLoadingProvider";
 
 export default function RootLayout() {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
+  const {setLoadingAuth} = useContext(LoadingAuthContext)
   const getAuth = async () => {
-    const resp = await fetch("http://localhost:5000/user/getAuth", {
+    setLoadingAuth(true)
+    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/getAuth`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -15,11 +18,12 @@ export default function RootLayout() {
     });
 
     const respInJSON = await resp.json();
-    if (resp.status == 200) {
+    if (resp.status === 200) {
       setAuth(respInJSON);
     } else {
-      setAuth({})
+      setAuth({});
     }
+    setLoadingAuth(false)
   };
 
   useEffect(() => {

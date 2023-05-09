@@ -20,7 +20,7 @@ export default function Form1(props) {
             body: JSON.stringify({ email })
         })
 
-        if (resp.status == 200) {
+        if (resp.status === 200) {
             props.setStep(2)
         } else {
 

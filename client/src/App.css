@@ -1,19 +1,6 @@
-.main{
-  display: flex;
-  flex-direction: column;
-}
-
-footer {
-  bottom: 0;
-  width: 100%;
-  position: absolute;
-  text-align: center;
-  overflow: hidden;
-}
-
 nav a.active {
   font-weight: bold;
-  color: #F0EB8D;
+  color: #e5dc36;
 }
 
 .parent:focus-within:focus-within label {
