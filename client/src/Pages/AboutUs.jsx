@@ -164,6 +164,9 @@ export default function AboutUs() {
                 bg="#8D858E"
                 _dark={{ bg: "#625D63" }}
                 borderTop="2px solid"
+                _hover={{
+                  boxShadow: ` #005900 0px 10px 20px,#005900 0px 6px 6px`,
+                }}
                 borderColor="#008000"
                 borderBottomLeftRadius="lg"
                 borderBottomRightRadius="lg"

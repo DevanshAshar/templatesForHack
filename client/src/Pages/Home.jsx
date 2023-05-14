@@ -14,7 +14,7 @@ import HomeFAQ1 from "./HomeSections/HomeFAQ1";
 import HomeFAQ2 from "./HomeSections/HomeFAQ2";
 import HomeContact from "./HomeSections/HomeContact";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import { SocialIcon } from 'react-social-icons';
+import { SocialIcon } from "react-social-icons";
 
 export default function Home() {
   const contributers = [
@@ -87,10 +87,13 @@ export default function Home() {
       </Box>
 
       <Grid padding="2rem" templateColumns="repeat(3,1fr)" placeItems="center">
-
         <Grid>
           <Text fontWeight="bold" fontSize={"lg"}>
-            Made by <SocialIcon network="linkedin" style={{height:'23px',width:'23px'}}/>
+            Made by{" "}
+            <SocialIcon
+              network="linkedin"
+              style={{ height: "23px", width: "23px" }}
+            />
           </Text>
           {contributers.map((contributer) => (
             <ChakraLink
@@ -107,15 +110,9 @@ export default function Home() {
           <Text fontWeight="bold" fontSize={"lg"}>
             Links
           </Text>
-          <Box color={useColorModeValue("$8D858E", "#413543")}>
+          <Box color={useColorModeValue("#413543", "#8D858E")}>
             <Text cursor={"pointer"}>
-              <Link
-                to="hero"
-                spy={true}
-                smooth={true}
-                offset={-100}
-                duration={300}
-              >
+              <Link to="hero" spy={true} smooth={true} duration={200}>
                 Scroll to the top
               </Link>
             </Text>
@@ -142,7 +139,7 @@ export default function Home() {
 
         <Grid>
           <Text cursor={"pointer"}>
-            <Link to="hero">
+            <Link to="hero" spy={true} smooth={true} duration={200}>
               <Image src="/logo.png" height="8rem" />
             </Link>
           </Text>
@@ -150,7 +147,6 @@ export default function Home() {
             JobSeeker &copy; {new Date().getFullYear()}
           </Text>
         </Grid>
-
       </Grid>
     </>
   );

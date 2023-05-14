@@ -138,6 +138,7 @@ export default function Navbar() {
           <Spacer />
 
           <IconButton
+            mr={{ sm: "1.3rem" }}
             size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label={"Open Menu"}
@@ -181,7 +182,12 @@ export default function Navbar() {
               </>
             )}
             <IconButton
-              _hover={{ backgroundColor: `${useColorModeValue('primary.light','primary.dark')}`}}
+              _hover={{
+                backgroundColor: `${useColorModeValue(
+                  "primary.light",
+                  "primary.dark"
+                )}`,
+              }}
               icon={
                 colorMode === "light" ? (
                   <MoonIcon

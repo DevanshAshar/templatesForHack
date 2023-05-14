@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Select } from "chakra-react-select";
-import { groupedCountries } from "../../Assets/Countries";
+import { groupedCountries } from "../../Assets/Data/Countries";
 import { useChakraSelectProps } from "chakra-react-select";
 
 export default function Form1(props) {
@@ -102,33 +102,33 @@ export default function Form1(props) {
               dropdownIndicator: (provided) => ({
                 ...provided,
                 w: "40px",
-                bg:'#625D63',
-                _dark:{
-                  bg:'#2D252E'
-                }
+                bg: "#625D63",
+                _dark: {
+                  bg: "#2D252E",
+                },
               }),
               control: (provided, state) => ({
                 ...provided,
                 borderBottomLeftRadius: state.menuIsOpen ? 0 : "md",
                 borderBottomRightRadius: state.menuIsOpen ? 0 : "md",
-                transitionDuration: 5
+                transitionDuration: 5,
               }),
               group: (provided) => ({
                 ...provided,
                 borderBottomWidth: "2px",
-                borderBottomColor: '#F0EB8D',
+                borderBottomColor: "#F0EB8D",
                 _last: {
-                  borderBottomWidth: 0
-                }
+                  borderBottomWidth: 0,
+                },
               }),
               groupHeading: (provided) => ({
                 ...provided,
-                bgColor:'#dbe0e0',
-                _dark:{bgColor:'#000000'},
-                fontWeight:'bold',
-                fontSize:'14px',
+                bgColor: "#dbe0e0",
+                _dark: { bgColor: "#000000" },
+                fontWeight: "bold",
+                fontSize: "14px",
                 px: "1.4rem",
-                textTransform: "uppercase"
+                textTransform: "uppercase",
               }),
               menu: (provided) => ({
                 ...provided,
@@ -136,9 +136,9 @@ export default function Form1(props) {
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
                 borderWidth: "2px",
-                borderColor:'#2D252E',
-                _dark:{
-                  borderColor:'#625D63'
+                borderColor: "#2D252E",
+                _dark: {
+                  borderColor: "#625D63",
                 },
                 borderBottomRadius: "md",
               }),
@@ -146,12 +146,10 @@ export default function Form1(props) {
                 ...provided,
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
-                bgColor:'#dbe0e0',
-                _dark:{bgColor:'#000000'}
-  
-              })
+                bgColor: "#dbe0e0",
+                _dark: { bgColor: "#000000" },
+              }),
             }}
-  
           ></Select>
         </FormControl>
       </div>
@@ -161,7 +159,7 @@ export default function Form1(props) {
           <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
           <InputGroup>
             <InputLeftAddon
-              width={'54px'}
+              width={"54px"}
               children={props.phoneNumberPrefix}
               bgColor={useColorModeValue("#625D63", "#2D252E")}
               color={"white"}
