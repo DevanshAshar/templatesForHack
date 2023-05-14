@@ -35,7 +35,7 @@ export default function SplitLoginPage() {
 
   const dealingWithLoginPageSubmission = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/loginUser`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/loginUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,8 +77,8 @@ export default function SplitLoginPage() {
 
   return (
     <>
-      <Grid templateColumns="2fr 1fr 1fr">
-        <GridItem gridColumn="1 / 3" gridRow={1} maxH={"100vh"}>
+      <Grid templateColumns="2fr 1fr 1fr" >
+        <GridItem gridColumn="1 / 3" gridRow={1} height={'88vh'} margin={0}>
           <Image
             alt="Cover image"
             objectFit="cover"

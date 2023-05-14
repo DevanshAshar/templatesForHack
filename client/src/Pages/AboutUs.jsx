@@ -61,139 +61,139 @@ const testimonials = [
 export default function AboutUs() {
   return (
     <>
-      <VStack
-        mt={"3.2rem"}
-        mb={10}
-        textAlign={"center"}
-        lineHeight={"30px"}
-        fontSize={"lg"}
-      >
-        <Text>
-          This website was made by x engineering undergraduates with the vision
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. A veniam
-          beatae excepturi accusantium dicta fugiat! Ipsa, repellat numquam hic
-          illum nulla qui. Numquam aliquam cumque iusto quos exercitationem
-          maxime soluta laboriosam perspiciatis ut impedit ducimus hic, repellat
-          labore blanditiis beatae itaque minus cum provident enim? Aut
-          voluptate aperiam architecto praesentium. of
-        </Text>
-        <Text>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
-          corporis architecto molestiae dolorum sunt nihil error, facere
-          assumenda voluptas consequatur modi. Quis aliquid eligendi ipsa modi
-          quas iure, vero quisquam fugiat exercitationem ea tempora illum,
-          cupiditate omnis magni recusandae. Optio itaque quas, vitae unde sit
-          perspiciatis debitis maxime voluptas! Lorem ipsum dolor, sit amet
-          consectetur adipisicing elit. Odit, aliquid.
-        </Text>
-        <Text>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
-          corporis architecto molestiae dolorum sunt nihil error, facere
-        </Text>
-      </VStack>
-
-      <VStack textAlign={"center"} mb={20}>
-        <Text
+        <VStack
           mt={"3.2rem"}
-          lineHeight={"20px"}
-          fontWeight={"bold"}
-          textDecoration={`{useColorModeValue('#F0EB8D','#e5dc36')} wavy underline`}
-          fontSize={"4xl"}
-        >
-          Trusted by the community
-        </Text>
-        <Text
           mb={10}
-          paddingLeft={"20rem"}
+          textAlign={"center"}
+          lineHeight={"30px"}
           fontSize={"lg"}
-          color={useColorModeValue("#666666", "#B2B2B2")}
         >
-          and for the right reasons✨
-        </Text>
+          <Text>
+            This website was made by x engineering undergraduates with the
+            vision Lorem ipsum dolor sit amet consectetur adipisicing elit. A
+            veniam beatae excepturi accusantium dicta fugiat! Ipsa, repellat
+            numquam hic illum nulla qui. Numquam aliquam cumque iusto quos
+            exercitationem maxime soluta laboriosam perspiciatis ut impedit
+            ducimus hic, repellat labore blanditiis beatae itaque minus cum
+            provident enim? Aut voluptate aperiam architecto praesentium. of
+          </Text>
+          <Text>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
+            corporis architecto molestiae dolorum sunt nihil error, facere
+            assumenda voluptas consequatur modi. Quis aliquid eligendi ipsa modi
+            quas iure, vero quisquam fugiat exercitationem ea tempora illum,
+            cupiditate omnis magni recusandae. Optio itaque quas, vitae unde sit
+            perspiciatis debitis maxime voluptas! Lorem ipsum dolor, sit amet
+            consectetur adipisicing elit. Odit, aliquid.
+          </Text>
+          <Text>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta quod
+            corporis architecto molestiae dolorum sunt nihil error, facere
+          </Text>
+        </VStack>
 
-        <Container maxW="5xl">
-          <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3 }}
-            spacing={"7%"}
-            mt={12}
-            mb={4}
+        <VStack textAlign={"center"} mb={20}>
+          <Text
+            mt={"3.2rem"}
+            lineHeight={"20px"}
+            fontWeight={"bold"}
+            textDecoration={`{useColorModeValue('#F0EB8D','#e5dc36')} wavy underline`}
+            fontSize={"4xl"}
           >
-            {statData.map((data) => (
-              <Box
-                key={data.id}
-                boxShadow="#F0EB8D 0px 2px 8px 0px"
-                _dark={{ boxShadow: "#e5dc36 0px 2px 8px 6px" }}
-                py={5}
-                rounded="md"
-                borderWidth={2}
-              >
-                <Stat>
-                  <StatLabel fontSize={"xl"}>{data.label}</StatLabel>
-                  <NumbersAnimation
-                    Component={StatNumber}
-                    end={data.number}
-                    suffix={data.suffixForNumber}
-                    decimal={data.decimal}
-                  >
-                    {data.number}
-                  </NumbersAnimation>
-                  <StatHelpText>
-                    <StatArrow type="increase" />
-                    {data.increaseInNumber + "%"}
-                  </StatHelpText>
-                </Stat>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Container>
-      </VStack>
+            Trusted by the community
+          </Text>
+          <Text
+            mb={10}
+            paddingLeft={"20rem"}
+            fontSize={"lg"}
+            color={useColorModeValue("#666666", "#B2B2B2")}
+          >
+            and for the right reasons✨
+          </Text>
 
-      <Flex justify="center" mt={9}>
-        <chakra.h3 fontSize="5xl" fontWeight="bold" mb={2.8}>
-          Testimonials
-        </chakra.h3>
-      </Flex>
+          <Container maxW="5xl">
+            <SimpleGrid
+              columns={{ base: 1, sm: 2, md: 3 }}
+              spacing={"7%"}
+              mt={12}
+              mb={4}
+            >
+              {statData.map((data) => (
+                <Box
+                  key={data.id}
+                  boxShadow="#F0EB8D 0px 2px 8px 0px"
+                  _dark={{ boxShadow: "#e5dc36 0px 2px 8px 6px" }}
+                  py={5}
+                  rounded="md"
+                  borderWidth={2}
+                >
+                  <Stat>
+                    <StatLabel fontSize={"xl"}>{data.label}</StatLabel>
+                    <NumbersAnimation
+                      Component={StatNumber}
+                      end={data.number}
+                      suffix={data.suffixForNumber}
+                      decimal={data.decimal}
+                    >
+                      {data.number}
+                    </NumbersAnimation>
+                    <StatHelpText>
+                      <StatArrow type="increase" />
+                      {data.increaseInNumber + "%"}
+                    </StatHelpText>
+                  </Stat>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Container>
+        </VStack>
 
-      <SimpleGrid columns={2} minChildWidth="465px">
-        {testimonials.map((testimonial, index) => {
-          return (
-            <Container maxW="5xl" p={{ base: 5, md: 10 }} key={index}>
-              <VStack
-                spacing={3}
-                p={{ base: 4, sm: 8 }}
-                bg="#8D858E"
-                _dark={{ bg: "#625D63" }}
-                borderTop="2px solid"
-                _hover={{
-                  boxShadow: ` #005900 0px 10px 20px,#005900 0px 6px 6px`,
-                }}
-                borderColor="#008000"
-                borderBottomLeftRadius="lg"
-                borderBottomRightRadius="lg"
-                maxW="25rem"
-                color="black"
-                margin="0 auto"
-                boxShadow="lg"
-                key={index}
-              >
-                <Icon as={FaQuoteRight} w={8} h={8} color="#008000" />
-                <Text p={5}>{testimonial.content}</Text>
-                <VStack alignItems="center">
-                  <Avatar name="avatar" src={testimonial.image} size="lg" />
-                  <Box textAlign="center">
-                    <Text fontWeight="bold" fontSize="xl">
-                      {testimonial.username}
-                    </Text>
-                    <Text fontSize="md">
-                      {testimonial.position} at {testimonial.company}
-                    </Text>
-                  </Box>
+        <Flex justify="center" mt={9}>
+          <chakra.h3 fontSize="5xl" fontWeight="bold" mb={2.8}>
+            Testimonials
+          </chakra.h3>
+        </Flex>
+
+        <SimpleGrid columns={2} minChildWidth="465px">
+          {testimonials.map((testimonial, index) => {
+            return (
+              <Container maxW="5xl" p={{ base: 5, md: 10 }} key={index}>
+                <VStack
+                  spacing={3}
+                  p={{ base: 4, sm: 8 }}
+                  bg="#8D858E"
+                  _dark={{ bg: "#625D63" }}
+                  borderTop="2px solid"
+                  _hover={{
+                    boxShadow: ` #005900 0px 10px 20px,#005900 0px 6px 6px`,
+                  }}
+                  borderColor="#008000"
+                  borderBottomLeftRadius="lg"
+                  borderBottomRightRadius="lg"
+                  maxW="25rem"
+                  color="black"
+                  margin="0 auto"
+                  boxShadow="lg"
+                  key={index}
+                >
+                  <Icon as={FaQuoteRight} w={8} h={8} color="#008000" />
+                  <Text p={5}>{testimonial.content}</Text>
+                  <VStack alignItems="center">
+                    <Avatar name="avatar" src={testimonial.image} size="lg" />
+                    <Box textAlign="center">
+                      <Text fontWeight="bold" fontSize="xl">
+                        {testimonial.username}
+                      </Text>
+                      <Text fontSize="md">
+                        {testimonial.position} at {testimonial.company}
+                      </Text>
+                    </Box>
+                  </VStack>
                 </VStack>
-              </VStack>
-            </Container>
-          );
-        })}
-      </SimpleGrid>
+              </Container>
+            );
+          })}
+        </SimpleGrid>
     </>
   );
 }

@@ -6,7 +6,7 @@ const theme = extendTheme({
     global: (props) => ({
       body: {
         bg: mode("#FFFFFF", "#000000")(props),
-        fontFamily: `Quicksand, sans-serif;`,
+        fontFamily: `Quicksand, sans-serif;`,  
       },
     }),
   },

@@ -36,8 +36,9 @@ export default function LoginPage() {
 
   return (
     <Flex
-      minH={'92vh'}
+      height={'90vh'}
       align={'center'}
+      overFlowY='hidden'
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}>
       <Center>

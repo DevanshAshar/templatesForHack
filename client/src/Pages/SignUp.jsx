@@ -97,7 +97,7 @@ export default function SignIn() {
 
   const dealingWithSignInFormSubmission = async (e) => {
     e.preventDefault();
-    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/newUser`, {
+    const resp = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/newUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export default function SignIn() {
   };
 
   return (
-    <Flex align={"center"} justify={"center"} alignContent={"space-evenly"}>
+    <Flex align={"center"} justify={"center"} alignContent={"space-evenly"} >
       <Box
         bg={useColorModeValue("#a0a0a0", "#241f1f")}
         borderWidth="1px"

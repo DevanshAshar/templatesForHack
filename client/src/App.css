@@ -3,7 +3,24 @@ nav a.active {
   color: #e5dc36;
 }
 
+::-webkit-scrollbar {
+  width: 1rem;
+  background-color: grey;
+}
+
+::-webkit-scrollbar-track {
+  border: 0.4rem solid transparent;
+  background-clip: content-box;   
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #e5dc36;
+  /* actual border*/
+  border: 0.3rem solid grey;
+  border-radius: 15px;
+}
+
 .parent:focus-within:focus-within label {
   font-weight: bold;
 }
-
