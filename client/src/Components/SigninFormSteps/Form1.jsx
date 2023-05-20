@@ -10,7 +10,7 @@ import {
   FormErrorMessage,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
 import { groupedCountries } from "../../Assets/Data/Countries";
 import { useChakraSelectProps } from "chakra-react-select";
@@ -20,23 +20,14 @@ export default function Form1(props) {
     const event = {
       target: {
         id: "country",
-        value: e.label,
+        value: e,
       },
     };
     props.setFormData(event);
   };
 
-  const selectProps = useChakraSelectProps({
-    onChange: dealingWithPhoneNumberPrefixOnCountryChange,
-  });
-
   useEffect(() => {
-    for (let continent of groupedCountries) {
-      const result = continent.options.find(
-        (country) => country.label === props.data.country
-      );
-      if (result) props.setPhoneNumberPrefix(result.code);
-    }
+    props.setPhoneNumberPrefix(props.data.country.code)    
   }, [props.data.country]);
 
   return (
@@ -91,12 +82,15 @@ export default function Form1(props) {
       </div>
 
       <div className="parent">
-        <FormControl mt="3%" isRequired>
+        <FormControl mt="3%" isRequired isInvalid={props.errors.country}>
           <FormLabel htmlFor="country">Country</FormLabel>
           <Select
             id="country"
-            {...selectProps}
             options={groupedCountries}
+            onChange={(e) => {
+              dealingWithPhoneNumberPrefixOnCountryChange(e);
+            }}
+            value={props.data.country}
             selectedOptionColorScheme="green"
             chakraStyles={{
               dropdownIndicator: (provided) => ({
@@ -151,6 +145,11 @@ export default function Form1(props) {
               }),
             }}
           ></Select>
+          {props.errors.country === "" ? (
+            <FormHelperText></FormHelperText>
+          ) : (
+            <FormErrorMessage>{props.errors.country}</FormErrorMessage>
+          )}
         </FormControl>
       </div>
 
@@ -167,6 +166,7 @@ export default function Form1(props) {
             <Input
               type="number"
               id="phoneNumber"
+              pattern="[0-9]*"
               value={props.data.phoneNumber}
               onChange={props.setFormData}
             />

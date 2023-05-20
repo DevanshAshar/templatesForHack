@@ -6,5 +6,5 @@ mongoose.connect(process.env.MONGODB_URL,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>{
-    console.log('Connection Succesful');
+    console.log('Connection Succesful with database\n\n');
 }).catch((err)=>console.log(err));

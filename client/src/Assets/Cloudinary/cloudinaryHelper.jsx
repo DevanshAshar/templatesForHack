@@ -1,60 +1,64 @@
-import { cloudname, uploadPreset } from "./cloudinaryConfig"
+import axios from "axios";
+import { cloudname} from "./cloudinaryConfig";
 
 const baseUrl = `https://api.cloudinary.com/v1_1/${cloudname}`;
 
-export const makeUploadRequest = ({ file,
-    fieldName,
-    progressCallback,
-    successCallback,
-    errorCallback,
-}, logic) => {
+export const makeUploadRequest = async (
+  { file, fieldName, progressCallback, successCallback, errorCallback },
+  logic
+) => {
+  try {
+    const url = `${baseUrl}/auto/upload`;
 
-    const url = `${baseUrl}/image/upload`;
+    const signatureResponse = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/user/getCloudinarySignature`
+    );
 
-    const formData = new FormData()
-    formData.append(fieldName, file)
-    formData.append("upload_preset", uploadPreset)
-    const request = new XMLHttpRequest()
+    const formData = new FormData();
+    formData.append(fieldName, file);
+    formData.append("api_key", import.meta.env.VITE_CLOUDINARY_API_KEY);
+    formData.append("signature", signatureResponse.data.signature);
+    formData.append("timestamp", signatureResponse.data.timestamp);
 
-    request.open("POST", url)
+    const config = {
+      onUploadProgress: (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        progressCallback(total, loaded);
+      },
+    };
 
-    request.upload.onprogress = (e) => {
-        progressCallback(e.lengthComputable, e.loaded, e.total)
-    }
+    const response = await axios.post(url, formData, config);
 
-    request.onload = () => {
-        if (request.status >= 200 && request.status < 300) {
-            var responseInJSON = JSON.parse(request.response)
-            const { delete_token: deletetoken } = responseInJSON
-            logic(responseInJSON)
-            successCallback(deletetoken)
-        } else {
-            errorCallback(request.responseText)
-        }
-    }
-    request.send(formData)
-    return () => {
-        request.abort()
-    }
-}
+    const { delete_token: deleteToken } = response.data;
+    logic(response.data);
+    successCallback(deleteToken);
+  } catch (error) {
+    errorCallback(error.message);
+    console.log(error);
+  }
+};
 
-export const makeDeleteRequest = ({ token,
-    successCallback,
-    errorCallback
-}, deleteLogic) => {
+export const makeDeleteRequest = async (
+  { token, successCallback, errorCallback },
+  deleteLogic
+) => {
+  try {
     const url = `${baseUrl}/delete_by_token`;
 
-    const request = new XMLHttpRequest()
-    request.open("POST", url)
-    request.setRequestHeader("Content-Type", "application/json");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const data = {
+      token: token,
+    };
 
-    request.onload = () => {
-        if (request.status >= 200 && request.status < 300) {
-            deleteLogic(token)
-            successCallback()
-        } else {
-            errorCallback(request.responseText)
-        }
-    }
-    request.send(JSON.stringify({ token }))
-}
+    await axios.post(url, data, config);
+
+    deleteLogic(token);
+    successCallback();
+  } catch (error) {
+    errorCallback(error.message);
+  }
+};

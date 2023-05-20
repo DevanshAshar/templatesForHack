@@ -11,7 +11,7 @@ export default function RootLayout() {
   const getAuth = async () => {
     setLoadingAuth(true);
     const resp = await fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}/user/getAuth`,
+      `${import.meta.env.VITE_API_ENDPOINT}/user/getAuth`,
       {
         method: "GET",
         headers: {
@@ -37,7 +37,7 @@ export default function RootLayout() {
   return (
     <Box>
       <Navbar />
-      <Outlet />
+        <Outlet />
     </Box>
   );
 }

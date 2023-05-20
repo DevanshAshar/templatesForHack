@@ -5,6 +5,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "2.3.6",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.0",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@vitejs/plugin-react": "^4.0.0",
@@ -34,7 +36,7 @@
     "build": "vite build",
     "serve": "vite preview"
   },
-    "eslintConfig": {
+  "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"

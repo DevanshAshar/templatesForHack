@@ -20,7 +20,12 @@ export default function SignIn() {
   const toast = useToast();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [
+    isPictureOnlySelectedAndNotUploaded,
+    setIsPictureOnlySelectedAndNotUploaded,
+  ] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [files, setFiles] = useState([]);
   const [data, setData] = useState({
     firstName: "",
     username: "",
@@ -28,12 +33,15 @@ export default function SignIn() {
     lastName: "",
     email: "",
     password: "",
-    country: "",
+    country: {
+      label: "",
+      value: "",
+      code: "",
+    },
+    //chakra react select needs value to be the whole object(look at countries data and not just label of the object)
     phoneNumber: "",
     socials: "",
   });
-
-  console.log(step)
 
   const setFormData = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -44,21 +52,33 @@ export default function SignIn() {
     username: "",
     lastName: "",
     email: "",
-    password: "",
     country: "",
+    password: "",
     phoneNumber: "",
   });
   const [phoneNumberPrefix, setPhoneNumberPrefix] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const [profilePic, setProfilePic] = useState({
+    public_id: "",
+    signature: "",
+    version: "",
+  });
 
-  const setProfilePicLogic = (url) => {
-    setProfilePic(url.secure_url);
+  const setProfilePicLogic = (cloudinaryObject) => {
+    setProfilePic({
+      ...profilePic,
+      public_id: cloudinaryObject.public_id,
+      signature: cloudinaryObject.signature,
+      version: cloudinaryObject.version,
+    });
   };
 
   const deleteProfilePicLogic = () => {
-    setProfilePic("");
+    setProfilePic({
+      public_id: "",
+      signature: "",
+      version: "",
+    });
   };
-
 
   //  for multiple we will use array
   // const setProfilePicLogic = (url) => {
@@ -74,11 +94,11 @@ export default function SignIn() {
 
   const nextButtonLogic = async () => {
     let err = { noErrors: true };
-    if (step === 1 && data.country !== "") {
+    if (step === 1) {
       err = await ValidateData({
         phoneNumber: data.phoneNumber,
         email: data.email,
-        country: data.country,
+        country: data.country.label,
         phoneNumberPrefix: phoneNumberPrefix,
       });
       setErrors(err);
@@ -97,39 +117,71 @@ export default function SignIn() {
 
   const dealingWithSignInFormSubmission = async (e) => {
     e.preventDefault();
-    const resp = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/newUser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...data, phoneNumberPrefix, profilePic }),
-    });
-    const responseInJSON = await resp.json();
-    if (resp.status === 200) {
+
+    if (isPictureOnlySelectedAndNotUploaded) {
       toast({
-        status: "success",
-        title: "Account created!",
-        description: "Please login to your account now",
+        status: "warning",
+        title: "Image not uploaded!",
+        description: "Please click on the upload button to upload",
         duration: 3000,
         isClosable: true,
       });
-      navigate("/login");
     } else {
-      if (responseInJSON.message === "Username is not unique") {
-        setErrors({ ...errors, username: "This username is taken" });
-        setStep(2);
-      } else if (responseInJSON.message === "Email is not unique") {
-        setErrors({
-          ...errors,
-          email: "An account already exists for this email",
+      const resp = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/user/newUser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...data,country:data.country.label, phoneNumberPrefix, ...profilePic }),
+        }
+      );
+      const responseInJSON = await resp.json();
+      if (resp.status === 200) {
+        toast({
+          status: "success",
+          title: "Account created!",
+          description: "Please login to your account now",
+          duration: 3000,
+          isClosable: true,
         });
-        setStep(1);
+        navigate("/login");
+      } else {
+        if (responseInJSON.message === "Username is not unique") {
+          setErrors({ ...errors, username: "This username is taken" });
+          setStep(2);
+        } else if (responseInJSON.message === "Email is not unique") {
+          setErrors({
+            ...errors,
+            email: "An account already exists for this email",
+          });
+          setStep(1);
+        } else if (
+          responseInJSON.message === "cloudinary signature is invalid"
+        ) {
+          toast({
+            status: "error",
+            title: "Please try again!",
+            description: "There was some issue with uplaoding the image",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            status: "error",
+            title: "Please try again!",
+            description: "There was some issue with the server",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       }
     }
   };
 
   return (
-    <Flex align={"center"} justify={"center"} alignContent={"space-evenly"} >
+    <Flex align={"center"} justify={"center"} alignContent={"space-evenly"}>
       <Box
         bg={useColorModeValue("#a0a0a0", "#241f1f")}
         borderWidth="1px"
@@ -177,6 +229,11 @@ export default function SignIn() {
             setFormData={setFormData}
             data={data}
             errors={setErrors}
+            setIsPictureOnlySelectedAndNotUploaded={
+              setIsPictureOnlySelectedAndNotUploaded
+            }
+            files={files}
+            setFiles={setFiles}
           />
         )}
 

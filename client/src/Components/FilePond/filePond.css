@@ -1,0 +1,32 @@
+.dark .filepond--label-action {
+    text-decoration-color: #e5dc36;
+}
+
+.dark .filepond--drop-label {
+    color: white;
+}
+
+.dark .filepond--panel-root {
+    background-color: #413543;
+}
+
+.dark .filepond--panel-root {
+    border: 3px dashed #625D63;
+}
+
+.filepond--label-action {
+    text-decoration-color: #F0EB8D;
+}
+
+.filepond--drop-label {
+    color: black;
+}
+
+.filepond--panel-root {
+    background-color: #8D858E;
+}
+
+.filepond--panel-root {
+    border: 3px dashed #2D252E;
+}
+

@@ -10,7 +10,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FilePondComponent } from "../FilePondComponent";
+import { FilePondComponent } from "../FilePond/FilePondComponent";
 
 export default function Form3(props) {
   return (
@@ -54,10 +54,14 @@ export default function Form3(props) {
         <Stack>
           <Text> Add profile picture</Text>
           <FilePondComponent
+            setIsPictureOnlySelectedAndNotUploaded={props.setIsPictureOnlySelectedAndNotUploaded}
             profilePic={props.profilePic}
             deleteLogic={props.deleteLogic}
             acceptedFileType={["image/*"]}
+            // acceptedFileType={["application/pdf"]}
             setLogic={props.setLogic}
+            files={props.files}
+            setFiles={props.setFiles}
             allowMultiple={false}
           />
         </Stack>

@@ -9,7 +9,7 @@ const user=require('./routes/userRoutes')
 require('./databaseConnect')
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan("dev"));
+app.use(morgan(":method :url :status\n"))
 
 const whitelist = [""];
 const corsOptions = {

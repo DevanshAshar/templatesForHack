@@ -15,8 +15,10 @@ import HomeFAQ2 from "./HomeSections/HomeFAQ2";
 import HomeContact from "./HomeSections/HomeContact";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { SocialIcon } from "react-social-icons";
+import logo from "../Images/logo.webp"
+import PageWrapper from "../HOC/PageTransitionWrapper"
 
-export default function Home() {
+function Home() {
   const contributers = [
     {
       name: "Aman Nambisan",
@@ -140,7 +142,7 @@ export default function Home() {
         <Grid>
           <Text cursor={"pointer"}>
             <Link to="hero" spy={true} smooth={true} duration={200}>
-              <Image src="/logo.png" height="8rem" />
+              <Image src={logo} height="8rem" />
             </Link>
           </Text>
           <Text fontSize={"lg"} fontWeight="bold">
@@ -151,3 +153,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Home

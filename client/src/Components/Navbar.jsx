@@ -24,6 +24,9 @@ import { Link } from "react-scroll";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import useAuth from "../Hooks/useAuth";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import logo from "../Images/logo.webp";
+import { AdvancedImage } from "@cloudinary/react";
+import CloudinaryImageTransformations from "./Cloudinary/CloudinaryImageTransformations";
 
 const routing = (children) => {
   if (children === "About us") {
@@ -80,6 +83,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { auth, setAuth } = useAuth();
+  console.log(auth);
   const checkingForNullObjectForAuthObject = () => {
     //returns true when the auth is {} that is not logged in or else it returns false
     return Object.keys(auth).length === 0;
@@ -98,7 +102,7 @@ export default function Navbar() {
 
   const dealingWithLogout = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}user/logout`,
+      `${import.meta.env.VITE_API_ENDPOINT}/user/logout`,
       {
         method: "GET",
         credentials: "include",
@@ -127,11 +131,11 @@ export default function Navbar() {
           >
             {location.pathname === "/" ? (
               <Link to="hero" as={NavLink} offset={-64} smooth>
-                <Image src="/logo.png" height="4rem" margin="1rem 0" />
+                <Image src={logo} height="4rem" margin="1rem 0" />
               </Link>
             ) : (
               <NormalLink to="/" as={NavLink} variant={"navbar"}>
-                <Image src="/logo.png" height="4rem" margin="1rem 0" />
+                <Image src={logo} height="4rem" margin="1rem 0" />
               </NormalLink>
             )}
           </Text>
@@ -222,10 +226,20 @@ export default function Navbar() {
                   <Avatar
                     size={"sm"}
                     src={
-                      auth.profilePic ||
-                      "https://cdn-icons-png.flaticon.com/512/4908/4908415.png"
+                      auth.profilePicPublic_id
+                        ? ""
+                        : "https://cdn-icons-png.flaticon.com/512/4908/4908415.png"
                     }
-                  />
+                  >
+                    <AdvancedImage
+                      cldImg={CloudinaryImageTransformations(
+                        auth.profilePicPublic_id,
+                        "profilePic",
+                        80,
+                        80
+                      )}
+                    />
+                  </Avatar>
                 </MenuButton>
                 <MenuList
                   border={"none"}
@@ -237,10 +251,20 @@ export default function Navbar() {
                     <Avatar
                       size={"2xl"}
                       src={
-                        auth.profilePic ||
-                        "https://cdn-icons-png.flaticon.com/512/4908/4908415.png"
+                        auth.profilePicPublic_id
+                          ? ""
+                          : "https://cdn-icons-png.flaticon.com/512/4908/4908415.png"
                       }
-                    />
+                    >
+                      <AdvancedImage
+                        cldImg={CloudinaryImageTransformations(
+                          auth.profilePicPublic_id,
+                          "profilePic",
+                          130,
+                          130
+                        )}
+                      />
+                    </Avatar>
                   </Center>
                   <br />
                   <Center>
