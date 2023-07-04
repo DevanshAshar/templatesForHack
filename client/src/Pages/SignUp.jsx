@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Progress,
   Box,
@@ -16,10 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 
 export default function SignIn() {
-  let steps = 3;
+  let steps = 1;
   const toast = useToast();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [
     isPictureOnlySelectedAndNotUploaded,
     setIsPictureOnlySelectedAndNotUploaded,
@@ -47,6 +47,7 @@ export default function SignIn() {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
+
   const [errors, setErrors] = useState({
     firstName: "",
     username: "",
@@ -62,6 +63,10 @@ export default function SignIn() {
     signature: "",
     version: "",
   });
+  
+  // const publicIdLogic =()=>{
+  //   return ''
+  // }
 
   const setProfilePicLogic = (cloudinaryObject) => {
     setProfilePic({
@@ -72,6 +77,11 @@ export default function SignIn() {
     });
   };
 
+
+  const deleteMultipleLogic = (delete_token) =>{
+
+  }
+
   const deleteProfilePicLogic = () => {
     setProfilePic({
       public_id: "",
@@ -81,16 +91,42 @@ export default function SignIn() {
   };
 
   //  for multiple we will use array
-  // const setProfilePicLogic = (url) => {
-  //     profilePic.push(url)
-  //     console.log(profilePic)
-  // }
-  // const deleteProfilePicLogic = (token) => {
-  //     profilePic = profilePic.filter((pic) => {
-  //         return pic.delete_token != token
+  // const settingPublicIdOfFiles = (cloudinaryObject) => {
+  //   if (
+  //     publicIdOfFiles.length === 1 &&
+  //     publicIdOfFiles[0].public_id === "" &&
+  //     publicIdOfFiles[0].version === "" &&
+  //     publicIdOfFiles[0].signature === ""
+  //   ) {
+  //     setPublicIdOfFiles([
+  //       {
+  //         public_id: cloudinaryObject.public_id,
+  //         signature: cloudinaryObject.signature,
+  //         version: cloudinaryObject.version,
+  //         delete_token:cloudinaryObject.delete_token
+  //       },
+  //     ]);
+  //   } else {
+  //     setPublicIdOfFiles([
+  //       ...publicIdOfFiles,
+  //       {
+  //         public_id: cloudinaryObject.public_id,
+  //         signature: cloudinaryObject.signature,
+  //         version: cloudinaryObject.version,
+  //         delete_token:cloudinaryObject.delete_token
+  //       },
+  //     ]);
+  //   }
+  // };
+  // const deletePublicIdOfFiles = (token) => {
+  //   setPublicIdOfFiles(
+  //     publicIdOfFiles.filter((currentFile) => {
+  //       return currentFile.delete_token !== token;
   //     })
-  //     console.log(profilePic)
-  // }
+  //   );
+  // };
+
+
 
   const nextButtonLogic = async () => {
     let err = { noErrors: true };
@@ -226,14 +262,14 @@ export default function SignIn() {
             profilePic={profilePic}
             setLogic={setProfilePicLogic}
             deleteLogic={deleteProfilePicLogic}
-            setFormData={setFormData}
-            data={data}
-            errors={setErrors}
             setIsPictureOnlySelectedAndNotUploaded={
               setIsPictureOnlySelectedAndNotUploaded
             }
             files={files}
             setFiles={setFiles}
+            setFormData={setFormData}
+            data={data}
+            errors={setErrors}
           />
         )}
 

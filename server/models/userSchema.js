@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     profilePicPublic_id: {
-      type: String,
+      type: String, 
     },
     email: {
       type: String,
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     country: {
       type: String,
     },
-    name: {
+    npame: {
       type: String,
     },
     role: {

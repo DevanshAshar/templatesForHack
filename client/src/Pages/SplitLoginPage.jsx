@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
+import logo from "../Assets/Images/logo.webp"
 
 export default function SplitLoginPage() {
   const { setAuth } = useAuth();
@@ -152,6 +153,7 @@ export default function SplitLoginPage() {
                     value={data.password}
                     id="password"
                   />
+                  
                   <InputRightElement h={"full"}>
                     <Button
                       variant={"ghost"}
@@ -199,7 +201,9 @@ export default function SplitLoginPage() {
               </Button>
             </GridItem>
           </Grid>
+
         </GridItem>
+
       </Grid>
     </>
   );

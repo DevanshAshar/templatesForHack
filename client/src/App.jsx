@@ -26,17 +26,23 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="about" element={<AboutUs />} />
       <Route path="contact" element={<ContactUs />} />
-      <Route path="abc" element={<LoginPage />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
 
-      <Route path="/landing" element={<Landing />} />
+      <Route element={<AuthLayout />}>
+        <Route path="abc" element={<LoginPage />} />
+      </Route>
 
+      <Route path="landing" element={<Landing />} />
       <Route path="*" element={<ErrorPage />} />
     </Route>
   )
 );
 
 function App() {
+  if (import.meta.env.NODE_ENV === 'production') {
+    disableReactDevTools();
+  }
+  
   return <RouterProvider router={router} />;
 }
 

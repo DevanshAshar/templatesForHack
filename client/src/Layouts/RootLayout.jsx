@@ -22,6 +22,8 @@ export default function RootLayout() {
     );
 
     const respInJSON = await resp.json();
+    console.log(respInJSON)
+    
     if (resp.status === 200) {
       setAuth(respInJSON);
     } else {

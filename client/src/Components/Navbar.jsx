@@ -209,7 +209,6 @@ export default function Navbar() {
               variant="ghost"
             />
           </HStack>
-
           {auth.username && (
             <Flex alignItems={"center"}>
               <Menu>

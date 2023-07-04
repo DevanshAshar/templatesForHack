@@ -57,11 +57,14 @@ export default function Form3(props) {
             setIsPictureOnlySelectedAndNotUploaded={props.setIsPictureOnlySelectedAndNotUploaded}
             profilePic={props.profilePic}
             deleteLogic={props.deleteLogic}
-            acceptedFileType={["image/*"]}
-            // acceptedFileType={["application/pdf"]}
             setLogic={props.setLogic}
             files={props.files}
             setFiles={props.setFiles}
+            doYouWantCustomPublicId ={false}
+            publicIdLogic = {props.publicIdLogic}
+            // acceptedFileType={["application/pdf"]}
+            acceptedFileType={["image/png","image/jpg","image/jpeg","image/webp"]}
+            // acceptedFileType={["image/*"]}
             allowMultiple={false}
           />
         </Stack>

@@ -74,7 +74,7 @@ export default function Form1(props) {
             onChange={props.setFormData}
           />
           {props.errors.email === "" ? (
-            <FormHelperText>We'll never share your email</FormHelperText>
+            <FormHelperText>No spam! Unsubscribe at any time</FormHelperText>
           ) : (
             <FormErrorMessage>{props.errors.email}</FormErrorMessage>
           )}
@@ -172,7 +172,7 @@ export default function Form1(props) {
             />
           </InputGroup>
           {props.errors.phoneNumber === "" ? (
-            <FormHelperText>We wont spam your phone number</FormHelperText>
+            <FormHelperText>We will not share your number</FormHelperText>
           ) : (
             <FormErrorMessage>{props.errors.phoneNumber}</FormErrorMessage>
           )}

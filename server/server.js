@@ -4,12 +4,11 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dotenv=require('dotenv').config()
 const app = express()
-const user=require('./routes/userRoutes')
 
 require('./databaseConnect')
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan(":method :url :status\n"))
+app.use(morgan(":method :url :req[header] :status\n"))
 
 const whitelist = [""];
 const corsOptions = {
@@ -23,8 +22,11 @@ if (process.env.NODE_ENV === "development") {
     app.use(cors(corsOptions));
 }
 
-app.use('/user',user)
+//require routes
+app.use('/user',require('./routes/userRoutes'))
 
+
+//route not found
 app.use((req, res, next) => {
     res.status(404).json({
         error: "route not found",

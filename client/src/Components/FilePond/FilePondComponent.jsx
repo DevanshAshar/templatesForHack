@@ -12,6 +12,7 @@ import {
   makeUploadRequest,
 } from "../../Assets/Cloudinary/cloudinaryHelper";
 import { useColorMode } from "@chakra-ui/react";
+import useAuth from "../../Hooks/useAuth";
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -22,8 +23,15 @@ registerPlugin(
 
 export function FilePondComponent(props) {
   const { colorMode } = useColorMode();
-  var logic = props.setLogic;
-  var deleteLogic = props.deleteLogic;
+  const logic = props.setLogic;
+  const deleteLogic = props.deleteLogic;
+  const publicIdReturningFunction = props.publicIdLogic;
+  const doYouWantCustomPublicId = props.doYouWantCustomPublicId;
+  const { auth } = useAuth();
+
+  const publicIdLogic = () => {
+    return `${auth.username} ${uuidv4()}`;
+  };
 
   useEffect(() => {
     if (props.files[0] && !props.profilePic) {
@@ -34,9 +42,9 @@ export function FilePondComponent(props) {
   }, [props.files]);
 
   useEffect(() => {
-    if(colorMode==='dark'){
+    if (colorMode === "dark") {
       document.getElementById("filePondDiv").classList.add(`dark`);
-    }else{
+    } else {
       document.getElementById("filePondDiv").classList.remove(`dark`);
     }
   }, [colorMode]);
@@ -79,7 +87,9 @@ export function FilePondComponent(props) {
         errorCallback: error,
         progressCallback: progress,
       },
-      logic
+      logic,
+      doYouWantCustomPublicId,
+      publicIdLogic
     );
 
     return {
@@ -89,8 +99,6 @@ export function FilePondComponent(props) {
       },
     };
   };
-
-  //accepted files ko bhi array se pass karo
 
   return (
     <div id="filePondDiv">
@@ -102,7 +110,7 @@ export function FilePondComponent(props) {
         instantUpload={false}
         dropValidation={true}
         name="file"
-        labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        labelIdle='Drag & Drop files or <span class="filepond--label-action">Browse</span>'
         allowMultiple={props.allowMultiple}
         server={{ process, revert }}
         credits={false}

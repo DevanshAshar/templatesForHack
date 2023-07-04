@@ -7,6 +7,7 @@ import { useContext } from "react";
 export default function AuthLayout() {
   const { auth } = useAuth();
   const { authLoading } = useContext(LoadingAuthContext);
+
   const checkingForNullObjectForAuthObject = () => {
     //returns true when the auth is {} that is not logged in or else it returns false
     return Object.keys(auth).length === 0;
@@ -15,6 +16,8 @@ export default function AuthLayout() {
   if(authLoading){
     <Spinner></Spinner>
   }
+  console.log(checkingForNullObjectForAuthObject)
 
-  return auth.Loggin !== -1 ? <Outlet /> : <Navigate to="/login" />;
+  return checkingForNullObjectForAuthObject?  <Navigate to="/login" /> :<Outlet /> 
 }
+

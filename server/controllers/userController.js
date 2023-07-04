@@ -69,6 +69,7 @@ const newUser = async (req, res) => {
     );
 
     if (expectedSignature === signature) {
+      console.log("CORRECT")
       const user = new User({
         username,
         password,
